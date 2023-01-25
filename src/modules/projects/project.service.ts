@@ -7,8 +7,15 @@ export class ProjectService {
     return [
       {
         title: 'test project',
-        skills: ['typescript', 'vue', 'nest'],
+        skills: [{ title: 'typescript' }, { title: 'vue' }, { title: 'nest' }],
       },
     ];
+  }
+
+  getProject(id): IProject {
+    return {
+      title: `Project ${id}`,
+      skills: [{ title: 'typescript' }, { title: 'vue' }, { title: 'nest' }],
+    };
   }
 }
