@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
+import { AuthGuard } from '../../common/guards/auth.guard';
 
 @Controller('skills')
+@UseGuards(AuthGuard)
 export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
