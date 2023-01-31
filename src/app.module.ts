@@ -1,17 +1,13 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProjectModule } from './modules/projects/project.module';
 import { SkillModule } from './modules/skill/skill.module';
-import { LoggerMiddleware } from './common/middleware/user.middleware';
+import { PostgrtesDatabaseProviderModule } from './providers/database/postgres/postgrtesDatabase.provider.module';
 
 @Module({
-  imports: [ProjectModule, SkillModule],
+  imports: [ProjectModule, SkillModule, PostgrtesDatabaseProviderModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('projects');
-  }
-}
+export class AppModule {}
