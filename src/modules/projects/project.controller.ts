@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 
@@ -7,17 +17,29 @@ export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @Get()
-  findAll(@Res() res) {
-    res.json(this.projectService.getProjects());
+  async findAll() {
+    return await this.projectService.getProjects();
   }
 
   @Get('/:id')
-  findOne(@Param('id') id, @Res() res) {
-    res.json(this.projectService.getProject(id));
+  async findOne(@Param('id') id) {
+    return await this.projectService.getProject(id);
   }
 
   @Post('/add')
-  create(@Body() createProjectDto: CreateProjectDto, @Res() res) {
-    res.json(createProjectDto);
+  async create(@Body() createProjectDto: CreateProjectDto) {
+    return await this.projectService.addProject(createProjectDto);
+  }
+
+  @Put('/:id')
+  async changeOne(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id,
+    @Body() createProjectDto: CreateProjectDto,
+  ) {
+    return await this.projectService.updateProject(id, createProjectDto);
   }
 }
