@@ -23,6 +23,11 @@ export class ProjectEntity extends BaseEntity {
   })
   title: string;
 
+  @Column({
+    default: '',
+  })
+  description?: string;
+
   @ManyToMany(() => SkillEntity, (skill) => skill.projects, { cascade: true })
   @JoinTable()
   skills: SkillEntity[];

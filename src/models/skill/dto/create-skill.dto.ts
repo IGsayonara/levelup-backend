@@ -1,14 +1,15 @@
 import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateProjectDto {
+export class CreateSkillDto {
   @ApiProperty()
   @IsNotEmpty()
+  @IsString()
   readonly title: string;
 
   @ApiProperty()
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  readonly skills: string[] = [];
+  readonly projects: string[] = [];
 }
