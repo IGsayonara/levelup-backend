@@ -1,24 +1,28 @@
 import {
+  Body,
   Controller,
   Get,
-  HttpStatus,
   Param,
-  ParseIntPipe,
+  Post,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
+import { JwtAuthGuard } from '../../authentication/guards/jwt-auth.guard';
+import { LocalAuthGuard } from '../../authentication/guards/local-auth.guard';
 
+@UseInterceptors(TransformInterceptor)
 @Controller('/users')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Get('/:id')
+  @Get('/:username')
   async findOne(
-    @Param(
-      'id',
-      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.FORBIDDEN }),
-    )
-    id: number,
+    @Param('username')
+    username: string,
   ) {
-    return this.userService.getUser(id);
+    return this.userService.getUser(username);
   }
 }

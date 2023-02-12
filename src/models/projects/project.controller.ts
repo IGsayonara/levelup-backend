@@ -6,19 +6,17 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put,
   Query,
-  Res,
+  Req,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ProjectService } from './project.service';
-import {
-  CreateProjectDto,
-  CreatePrimaryProjectDto,
-} from './dto/create-project.dto';
-import {
-  UpdatePrimaryProjectDto,
-  UpdateProjectDto,
-} from './dto/update-project.dto';
+import { CreateProjectDto } from './dto/create-project.dto';
+import { JwtAuthGuard } from '../../authentication/guards/jwt-auth.guard';
+import { UserService } from '../user/user.service';
+import { IUser } from '../user/interfaces/user.interface';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Controller('projects')
 export class ProjectController {
@@ -52,27 +50,11 @@ export class ProjectController {
   }
 
   @Post('/add')
-  async create(
-    @Body() createPrimaryProjectDto: CreatePrimaryProjectDto,
-    @Body() createProjectDto: CreateProjectDto,
-  ) {
-    const id = await this.projectService.addProject(createPrimaryProjectDto);
-    await this.projectService.updateProjectSkills(id, createProjectDto.skills);
-    return await this.projectService.getProject(id);
-  }
-
-  @Put('/:id')
-  async changeOne(
-    @Param(
-      'id',
-      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
-    )
-    id,
-    @Body() updateProjectDto: UpdateProjectDto,
-    @Body() updatePrimaryProjectDto: UpdatePrimaryProjectDto,
-  ) {
-    await this.projectService.updateProject(id, updatePrimaryProjectDto);
-    await this.projectService.updateProjectSkills(id, updateProjectDto.skills);
-    return await this.projectService.getProject(id);
+  @UseGuards(JwtAuthGuard)
+  async create(@Body() createProjectDto: CreateProjectDto, @Req() req) {
+    return await this.projectService.addProject(
+      createProjectDto,
+      req.user.username,
+    );
   }
 }
