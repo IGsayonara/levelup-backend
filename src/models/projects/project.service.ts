@@ -2,19 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IProject } from './interfaces/project.inerface';
 import { ProjectEntity } from './entities/project.entity';
 import { In, InsertResult } from 'typeorm';
-import {
-  CreatePrimaryProjectDto,
-  CreateProjectDto,
-  Skills,
-} from './dto/create-project.dto';
+import { CreateProjectDto } from './dto/create-project.dto';
 import { SkillEntity } from '../skill/entities/skill.entity';
-import {
-  UpdatePrimaryProjectDto,
-  UpdateProjectDto,
-} from './dto/update-project.dto';
+import { UserService } from '../user/user.service';
+import { IUser } from '../user/interfaces/user.interface';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Injectable()
 export class ProjectService {
+  constructor(private readonly userService: UserService) {}
   async getProjects(page = 0, limit = 4): Promise<IProject[]> {
     return await ProjectEntity.find({
       relations: ['skills'],
@@ -33,7 +29,7 @@ export class ProjectService {
 
     if (!project) {
       throw new NotFoundException({
-        message: `Can't find any skill with id: ${id}`,
+        message: `Can't find any project with id: ${id}`,
       });
     }
 
@@ -41,35 +37,26 @@ export class ProjectService {
   }
 
   async addProject(
-    createPrimaryProjectDto: CreatePrimaryProjectDto,
-  ): Promise<number> {
-    return await ProjectEntity.insert(createPrimaryProjectDto).then(
-      (result) => {
-        return result.raw[0].id;
-      },
-    );
-  }
-  async updateProject(
-    id: number,
-    updatePrimaryProjectDto: UpdatePrimaryProjectDto,
-  ): Promise<void> {
-    await ProjectEntity.update(id, updatePrimaryProjectDto);
-  }
+    createProjectDto: CreateProjectDto,
+    username,
+  ): Promise<IProject> {
+    const project = new ProjectEntity();
 
-  async updateProjectSkills(id: number, skillsIds: Skills): Promise<void> {
-    if (!skillsIds) return;
-    const project = await ProjectEntity.findOne({
-      where: {
-        id,
-      },
-    });
+    const user = await this.userService.getUser(username);
 
-    const skills = await SkillEntity.findBy({
-      id: In(skillsIds),
-    });
+    const skills: SkillEntity[] = createProjectDto.skills
+      ? await SkillEntity.find({
+          where: {
+            id: In(createProjectDto.skills),
+          },
+        })
+      : [];
 
+    project.user = user;
+    project.title = createProjectDto.title;
+    project.description = createProjectDto.description;
     project.skills = skills;
 
-    await project.save();
+    return await project.save();
   }
 }

@@ -8,9 +8,7 @@ import { ProjectEntity } from '../projects/entities/project.entity';
 @Injectable()
 export class SkillService {
   async getSkills(): Promise<ISkill[]> {
-    return await SkillEntity.find({
-      relations: ['projects'],
-    });
+    return await SkillEntity.find();
   }
   async getSkill(id: number): Promise<ISkill> {
     const skill = await SkillEntity.findOne({
@@ -29,14 +27,9 @@ export class SkillService {
     return skill;
   }
   async addSkill(createSkillDto: CreateSkillDto): Promise<ISkill> {
-    const projects = await ProjectEntity.findBy({
-      title: In(createSkillDto.projects),
-    });
-
     const skill = new SkillEntity();
 
     skill.title = createSkillDto.title;
-    skill.projects = projects;
 
     return await skill.save();
   }

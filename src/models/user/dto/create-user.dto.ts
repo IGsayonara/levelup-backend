@@ -6,7 +6,11 @@ export type Projects = number[];
 export class CreateUserDto {
   @ApiProperty()
   @IsString()
-  readonly name: string;
+  readonly username: string;
+
+  @ApiProperty()
+  @IsString()
+  readonly password: string;
 
   @ApiProperty()
   @IsNumber({}, { each: true })

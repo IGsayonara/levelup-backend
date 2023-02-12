@@ -6,10 +6,4 @@ export class CreateSkillDto {
   @IsNotEmpty()
   @IsString()
   readonly title: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  readonly projects: string[] = [];
 }
