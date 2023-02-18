@@ -1,21 +1,35 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IProject } from './interfaces/project.inerface';
 import { ProjectEntity } from './entities/project.entity';
-import { In, InsertResult } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { SkillEntity } from '../skill/entities/skill.entity';
 import { UserService } from '../user/user.service';
-import { IUser } from '../user/interfaces/user.interface';
-import { UserEntity } from '../user/entities/user.entity';
+import {
+  FilterOperator,
+  paginate,
+  Paginated,
+  PaginateQuery,
+} from 'nestjs-paginate';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ProjectService {
-  constructor(private readonly userService: UserService) {}
-  async getProjects(page = 0, limit = 4): Promise<IProject[]> {
-    return await ProjectEntity.find({
+  constructor(
+    private readonly userService: UserService,
+
+    @InjectRepository(ProjectEntity)
+    private readonly projectRepository: Repository<ProjectEntity>,
+  ) {}
+  async getProjects(query: PaginateQuery): Promise<Paginated<ProjectEntity>> {
+    return paginate(query, this.projectRepository, {
       relations: ['skills'],
-      skip: limit * page,
-      take: limit,
+      sortableColumns: ['id', 'title'],
+      searchableColumns: ['title'],
+      filterableColumns: { title: [FilterOperator.ILIKE] },
+      nullSort: 'last',
+      defaultSortBy: [['created_at', 'DESC']],
+      defaultLimit: 4,
     });
   }
 

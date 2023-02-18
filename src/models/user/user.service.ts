@@ -1,7 +1,6 @@
 import { UserEntity } from './entities/user.entity';
 import { IUser } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
-import { SkillEntity } from '../skill/entities/skill.entity';
 import { In } from 'typeorm';
 import { ProjectEntity } from '../projects/entities/project.entity';
 

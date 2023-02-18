@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Post,
   UseGuards,
@@ -7,9 +6,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
 import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
-import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @UseInterceptors(TransformInterceptor)

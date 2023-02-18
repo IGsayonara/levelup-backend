@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -7,10 +6,6 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Put,
-  Res,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
