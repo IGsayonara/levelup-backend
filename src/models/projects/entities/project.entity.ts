@@ -6,9 +6,10 @@ import {
   JoinTable,
   PrimaryGeneratedColumn,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { SkillEntity } from '../../skill/entities/skill.entity';
-import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity()
@@ -38,4 +39,17 @@ export class ProjectEntity extends BaseEntity {
   @ManyToMany(() => SkillEntity, (skill) => skill.projects, { cascade: true })
   @JoinTable()
   skills: SkillEntity[];
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  public created_at: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  public updated_at: Date;
 }

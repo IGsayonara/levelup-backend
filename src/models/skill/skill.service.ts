@@ -1,9 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ISkill } from './interfaces/skill.inerface';
 import { SkillEntity } from './entities/skill.entity';
-import { In, InsertResult } from 'typeorm';
 import { CreateSkillDto } from './dto/create-skill.dto';
-import { ProjectEntity } from '../projects/entities/project.entity';
 
 @Injectable()
 export class SkillService {
