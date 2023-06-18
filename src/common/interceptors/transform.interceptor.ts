@@ -19,7 +19,7 @@ export class TransformInterceptor implements NestInterceptor {
   ): Observable<Response<any>> {
     return next.handle().pipe(
       map((data) => {
-        const { password, ...response } = data;
+        const { password, refreshToken, ...response } = data;
         return response;
       }),
     );

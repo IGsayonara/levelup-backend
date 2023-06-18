@@ -40,4 +40,14 @@ export class UserService {
     const saved = await user.save();
     return saved;
   }
+
+  async setRefreshToken(username: string, token: string | null = null) {
+    const user = await UserEntity.findOne({
+      where: {
+        username,
+      },
+    });
+    user.refreshToken = token;
+    await user.save();
+  }
 }

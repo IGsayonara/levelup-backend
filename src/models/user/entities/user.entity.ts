@@ -29,6 +29,13 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'text' })
   password: string;
 
+  @IsOptional()
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
+  refreshToken?: string;
+
   @OneToMany(() => SkillEntity, (skill) => skill.user, { cascade: true })
   @JoinColumn()
   @IsOptional()
