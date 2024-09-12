@@ -1,26 +1,29 @@
 import { UserSeederService } from './user.service';
 import { Injectable } from '@nestjs/common';
+import { UserEntity } from '../../models/user/entities/user.entity';
+import { ProjectEntity } from '../../models/projects/entities/project.entity';
+import { ProjectSeederService } from './project.service';
 
 @Injectable()
 export class Seeder {
-  constructor(private readonly userSeederService: UserSeederService) {}
+  constructor(
+    private readonly userSeederService: UserSeederService,
+    private readonly projectSeederService: ProjectSeederService,
+  ) {}
   async seed() {
-    await this.users()
-      .then((completed) => {
-        console.debug('Successfuly completed seeding users...');
-        Promise.resolve(completed);
-      })
-      .catch((error) => {
-        console.error('Failed seeding users...');
-        Promise.reject(error);
-      });
+    const users = await this.userSeederService.create();
+    const projects = await this.projectSeederService.create();
+    await this.addProjectsToUsers(users, projects);
   }
-  async users() {
-    return await Promise.all(this.userSeederService.create())
-      .then((createdLanguages) => {
-        console.log(createdLanguages);
-        return Promise.resolve(true);
-      })
-      .catch((error) => Promise.reject(error));
+  async addProjectsToUsers(
+    users: UserEntity[],
+    projects: ProjectEntity[],
+  ): Promise<any> {
+    console.log(users, projects);
+    return Promise.all(
+      users.map(async (user, userIndex) => {
+        await this.userSeederService.addProject(user, projects[userIndex]);
+      }),
+    );
   }
 }
