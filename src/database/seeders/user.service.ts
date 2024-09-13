@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../models/user/entities/user.entity';
 import { ProjectEntity } from '../../models/projects/entities/project.entity';
+import { SkillEntity } from '../../models/skill/entities/skill.entity';
 
 @Injectable()
 export class UserSeederService {
@@ -33,8 +34,23 @@ export class UserSeederService {
     if (!user.projects) {
       user.projects = [];
     }
+
     user.projects.push(project);
+
     await this.userRepository.save(user);
+
+    return user;
+  }
+
+  async addSkill(user: UserEntity, skill: SkillEntity): Promise<UserEntity> {
+    if (!user.skills) {
+      user.skills = [];
+    }
+
+    user.skills.push(skill);
+
+    await this.userRepository.save(user);
+
     return user;
   }
 }

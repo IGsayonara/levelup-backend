@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../../models/user/entities/user.entity';
 import { ProjectEntity } from '../../models/projects/entities/project.entity';
+import { SkillEntity } from '../../models/skill/entities/skill.entity';
 
 @Injectable()
 export class ProjectSeederService {
@@ -24,5 +24,18 @@ export class ProjectSeederService {
         return project;
       }),
     );
+  }
+
+  async addSkills(
+    project: ProjectEntity,
+    skills: SkillEntity[],
+  ): Promise<ProjectEntity> {
+    if (!project.skills) {
+      project.skills = [];
+    }
+
+    project.skills.push(...skills);
+    await project.save();
+    return project;
   }
 }
