@@ -7,6 +7,8 @@ import {
   BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { ProjectEntity } from '../../projects/entities/project.entity';
 import { SkillEntity } from '../../skill/entities/skill.entity';
@@ -29,14 +31,13 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'text' })
   password: string;
 
-  @OneToMany(() => SkillEntity, (skill) => skill.user, { cascade: true })
-  @JoinColumn()
-  @IsOptional()
+  @ManyToMany(() => SkillEntity, (skill) => skill.users, { cascade: true })
+  @JoinTable()
   skills: SkillEntity[];
 
-  @OneToMany(() => ProjectEntity, (project) => project.user, { cascade: true })
-  @JoinColumn()
-  @IsOptional()
+  @ManyToMany(() => ProjectEntity, (project) => project.users, {
+    cascade: true,
+  })
   projects: ProjectEntity[];
 
   @CreateDateColumn({

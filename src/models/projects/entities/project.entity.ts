@@ -5,15 +5,21 @@ import {
   ManyToMany,
   JoinTable,
   PrimaryGeneratedColumn,
-  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  AfterInsert,
+  AfterUpdate,
+  DataSource,
 } from 'typeorm';
 import { SkillEntity } from '../../skill/entities/skill.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity()
 export class ProjectEntity extends BaseEntity {
+  constructor(private dataSource: DataSource) {
+    super();
+  }
+
   @PrimaryGeneratedColumn({
     type: 'bigint',
     name: 'id',
@@ -33,8 +39,9 @@ export class ProjectEntity extends BaseEntity {
   })
   description?: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.projects)
-  user: UserEntity;
+  @ManyToMany(() => UserEntity, (user) => user.projects)
+  @JoinTable()
+  users: UserEntity[];
 
   @ManyToMany(() => SkillEntity, (skill) => skill.projects, { cascade: true })
   @JoinTable()

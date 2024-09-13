@@ -2,10 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinTable,
   ManyToMany,
-  ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProjectEntity } from '../../projects/entities/project.entity';
@@ -26,8 +23,8 @@ export class SkillEntity extends BaseEntity {
   })
   title: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.skills)
-  user: UserEntity;
+  @ManyToMany(() => UserEntity, (user) => user.skills)
+  users: UserEntity[];
 
   @ManyToMany(() => ProjectEntity, (project) => project.skills)
   projects: ProjectEntity[];
