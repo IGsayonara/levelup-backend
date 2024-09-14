@@ -16,10 +16,6 @@ import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity()
 export class ProjectEntity extends BaseEntity {
-  constructor(private dataSource: DataSource) {
-    super();
-  }
-
   @PrimaryGeneratedColumn({
     type: 'bigint',
     name: 'id',
