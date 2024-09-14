@@ -1,9 +1,9 @@
-import { UserSeederService } from './user.service';
+import { UserSeederService } from './user/user.service';
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../../models/user/entities/user.entity';
 import { ProjectEntity } from '../../models/projects/entities/project.entity';
-import { ProjectSeederService } from './project.service';
-import { SkillSeederService } from './skill.service';
+import { ProjectSeederService } from './project/project.service';
+import { SkillSeederService } from './skill/skill.service';
 import { SkillEntity } from '../../models/skill/entities/skill.entity';
 
 @Injectable()
