@@ -1,24 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../../models/user/entities/user.entity';
-import { ProjectEntity } from '../../models/projects/entities/project.entity';
-import { SkillEntity } from '../../models/skill/entities/skill.entity';
+import { UserEntity } from '../../../models/user/entities/user.entity';
+import { ProjectEntity } from '../../../models/projects/entities/project.entity';
+import { SkillEntity } from '../../../models/skill/entities/skill.entity';
+import { UserFactoryService } from '../../factories/user/user.service';
 
 @Injectable()
 export class UserSeederService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly userFactoryService: UserFactoryService,
   ) {}
 
   async create(): Promise<UserEntity[]> {
     return Promise.all(
       new Array(5).fill(null).map(async (_, i) => {
-        const user = this.userRepository.create({
-          password: 'test_password',
-          username: `User ${i + 1}`,
-        });
+        const user = this.userRepository.create(
+          this.userFactoryService.generateUser(),
+        );
 
         await this.userRepository.save(user);
 
