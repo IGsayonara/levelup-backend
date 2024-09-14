@@ -66,7 +66,7 @@ export class ProjectService {
         })
       : [];
 
-    project.user = user;
+    project.users.push(user);
     project.title = createProjectDto.title;
     project.description = createProjectDto.description;
     project.skills = skills;
