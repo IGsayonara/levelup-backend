@@ -1,11 +1,10 @@
 import { UserEntity } from './entities/user.entity';
 import { IUser } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
-import { In } from 'typeorm';
-import { ProjectEntity } from '../projects/entities/project.entity';
+import { UserResponseDTO } from './dto/user-response.dto';
 
 export class UserService {
-  async getUser(username): Promise<UserEntity> {
+  async findOne(username: string): Promise<UserEntity> {
     return await UserEntity.findOne({
       where: {
         username,
@@ -13,31 +12,18 @@ export class UserService {
       relations: ['projects', 'skills'],
     });
   }
-  async addUser(createUserDto: CreateUserDto): Promise<IUser> {
+
+  async addOne(createUserDto: CreateUserDto): Promise<UserResponseDTO> {
     const user = new UserEntity();
-
-    const projects = await ProjectEntity.find({
-      where: {
-        id: In(createUserDto.projects),
-      },
-      relations: {
-        skills: true,
-      },
-    });
-
-    const skillsInProjects = projects.reduce((currentSkills, project) => {
-      currentSkills.push(...project.skills);
-      return currentSkills;
-    }, []);
-
-    const skills = [...new Set(skillsInProjects)];
 
     user.username = createUserDto.username;
     user.password = createUserDto.password;
-    user.projects = projects;
-    user.skills = skills;
+    user.projects = [];
+    user.skills = [];
 
-    const saved = await user.save();
-    return saved;
+    await user.save();
+
+    const { password: _password, ...result } = user;
+    return result;
   }
 }
