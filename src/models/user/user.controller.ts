@@ -17,7 +17,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('/me')
   async findCurrent(@Req() req) {
-    return this.userService.getUser(req.user.username);
+    return this.userService.findOne(req.user.username);
   }
 
   @Get('/:username')
@@ -25,6 +25,6 @@ export class UserController {
     @Param('username')
     username: string,
   ) {
-    return this.userService.getUser(username);
+    return this.userService.findOne(username);
   }
 }
