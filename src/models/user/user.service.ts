@@ -1,5 +1,4 @@
 import { UserEntity } from './entities/user.entity';
-import { IUser } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDTO } from './dto/user-response.dto';
 

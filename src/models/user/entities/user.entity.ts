@@ -28,7 +28,7 @@ export class UserEntity extends BaseEntity {
   })
   username: string;
 
-  @Column({ type: 'text', select: false })
+  @Column({ type: 'text' })
   password: string;
 
   @ManyToMany(() => SkillEntity, (skill) => skill.users, { cascade: true })
