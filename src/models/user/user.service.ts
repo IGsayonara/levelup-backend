@@ -1,15 +1,34 @@
 import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserResponseDTO } from './dto/user-response.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 export class UserService {
-  async findOne(username: string): Promise<UserEntity> {
+  async findOneByUsername(username: string): Promise<UserEntity> {
     return await UserEntity.findOne({
       where: {
         username,
       },
       relations: ['projects', 'skills'],
     });
+  }
+
+  async findOneById(id: number): Promise<UserEntity> {
+    return await UserEntity.findOne({
+      where: {
+        id,
+      },
+      relations: ['projects', 'skills'],
+    });
+  }
+
+  async updateOne(
+    id: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserEntity> {
+    return await UserEntity.update(id, updateUserDto).then(
+      (updateResult) => updateResult.raw[0],
+    );
   }
 
   async addOne(createUserDto: CreateUserDto): Promise<UserResponseDTO> {

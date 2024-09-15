@@ -1,27 +1,35 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from '../models/user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import { IAccessTokenPayload } from './interfaces/accessToken-payload.interface';
+import { HashService } from '../common/services/hash.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
-    private configService: ConfigService,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly hashService: HashService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userService.findOne(username);
+    const user = await this.userService.findOneByUsername(username);
 
     if (!user) {
       throw new UnauthorizedException('Incorrect username or password');
     }
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await this.hashService.compare(
+      password,
+      user.password,
+    );
 
     if (!isPasswordCorrect) {
       throw new UnauthorizedException('Incorrect username or password');
@@ -30,22 +38,81 @@ export class AuthService {
     return user;
   }
 
-  async login(user: LoginDto) {
-    const payload = { username: user.username };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async login(user: IAccessTokenPayload) {
+    const { id, username } = user;
+
+    const tokens = await this.getTokens(id, username);
+    await this.updateRefreshToken(id, tokens.refreshToken);
+
+    return tokens;
   }
 
   async register(user: RegisterDto) {
-    const hashedPassword = await bcrypt.hash(
-      user.password,
-      +this.configService.get('BCRYPT_SALT'),
-    );
+    const hashedPassword = await this.hashService.hash(user.password);
 
     return await this.userService.addOne({
       username: user.username,
       password: hashedPassword,
     });
+  }
+
+  async updateRefreshToken(id: number, refreshToken: string) {
+    const hashedRefreshToken = await this.hashService.hash(refreshToken);
+    await this.userService.updateOne(id, {
+      refresh_token: hashedRefreshToken,
+    });
+  }
+
+  async getTokens(userId: number, username: string) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(
+        {
+          id: userId,
+          username,
+        },
+        {
+          secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+          expiresIn: '15m',
+        },
+      ),
+      this.jwtService.signAsync(
+        {
+          id: userId,
+          username,
+        },
+        {
+          secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+          expiresIn: '7d',
+        },
+      ),
+    ]);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  async refreshTokens(userId: number, refreshToken: string) {
+    const user = await this.userService.findOneById(userId);
+
+    if (!user || !user.refresh_token) {
+      throw new ForbiddenException('Access Denied');
+    }
+
+    const refreshTokenMatches = await this.hashService.compare(
+      refreshToken,
+      user.refresh_token,
+    );
+
+    if (!refreshTokenMatches) {
+      throw new ForbiddenException('Access Denied');
+    }
+
+    const tokens = await this.getTokens(user.id, user.username);
+
+    await this.updateRefreshToken(user.id, tokens.refreshToken);
+
+    return tokens;
   }
 }

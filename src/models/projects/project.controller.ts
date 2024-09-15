@@ -11,13 +11,14 @@ import {
 } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
-import { JwtAuthGuard } from '../../authentication/guards/jwt-auth.guard';
+import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
 
 @Controller('projects')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
+  @UseGuards(AccessTokenGuard)
   @Get()
   async findAll(@Paginate() query: PaginateQuery) {
     return await this.projectService.getProjects(query);
@@ -35,7 +36,7 @@ export class ProjectController {
   }
 
   @Post('/add')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   async create(@Body() createProjectDto: CreateProjectDto, @Req() req) {
     return await this.projectService.addProject(
       createProjectDto,

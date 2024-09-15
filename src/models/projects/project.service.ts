@@ -56,7 +56,7 @@ export class ProjectService {
   ): Promise<IProject> {
     const project = new ProjectEntity();
 
-    const user = await this.userService.findOne(username);
+    const user = await this.userService.findOneByUsername(username);
 
     const skills: SkillEntity[] = createProjectDto.skills
       ? await SkillEntity.find({
