@@ -52,4 +52,7 @@ export class UserEntity extends BaseEntity {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   public updated_at: Date;
+
+  @Column({ nullable: true })
+  public refresh_token: string | null;
 }

@@ -8,16 +8,16 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
-import { JwtAuthGuard } from '../../authentication/guards/jwt-auth.guard';
+import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
 
 @UseInterceptors(TransformInterceptor)
 @Controller('/users')
 export class UserController {
   constructor(private userService: UserService) {}
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Get('/me')
   async findCurrent(@Req() req) {
-    return this.userService.findOne(req.user.username);
+    return this.userService.findOneByUsername(req.user.username);
   }
 
   @Get('/:username')
@@ -25,6 +25,6 @@ export class UserController {
     @Param('username')
     username: string,
   ) {
-    return this.userService.findOne(username);
+    return this.userService.findOneByUsername(username);
   }
 }
