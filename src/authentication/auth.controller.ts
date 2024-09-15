@@ -1,6 +1,5 @@
 import { Controller, Post, UseGuards, Request, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { TransformInterceptor } from '../common/interceptors/transform.interceptor';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { RegisterDto } from './dto/register.dto';
 
@@ -15,7 +14,7 @@ export class AuthController {
 
   @Post('/register')
   async register(@Body() body: RegisterDto) {
-    console.log(body);
-    return await this.authService.register(body);
+    await this.authService.register(body);
+    return { success: true };
   }
 }
