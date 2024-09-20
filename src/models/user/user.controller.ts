@@ -9,14 +9,16 @@ import {
 import { UserService } from './user.service';
 import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
 import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
+@ApiBearerAuth()
+@UseGuards(AccessTokenGuard)
 @UseInterceptors(TransformInterceptor)
 @Controller('/users')
 export class UserController {
   constructor(private userService: UserService) {}
-  @UseGuards(AccessTokenGuard)
+
   @Get('/me')
   async findCurrent(@Req() req) {
     return this.userService.findOneByUsername(req.user.username);

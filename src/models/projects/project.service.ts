@@ -17,11 +17,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class ProjectService {
   constructor(
     private readonly userService: UserService,
-
     @InjectRepository(ProjectEntity)
     private readonly projectRepository: Repository<ProjectEntity>,
   ) {}
-  async getProjects(query: PaginateQuery): Promise<Paginated<ProjectEntity>> {
+  async getPaginated(query: PaginateQuery): Promise<Paginated<ProjectEntity>> {
     return paginate(query, this.projectRepository, {
       relations: ['skills'],
       sortableColumns: ['id', 'title'],
@@ -33,7 +32,7 @@ export class ProjectService {
     });
   }
 
-  async getProject(id: number): Promise<IProject> {
+  async getOne(id: number): Promise<IProject> {
     const project = await ProjectEntity.findOne({
       where: {
         id,

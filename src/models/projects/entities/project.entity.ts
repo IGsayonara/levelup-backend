@@ -7,15 +7,13 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  AfterInsert,
-  AfterUpdate,
-  DataSource,
 } from 'typeorm';
 import { SkillEntity } from '../../skill/entities/skill.entity';
 import { UserEntity } from '../../user/entities/user.entity';
+import { IProject } from '../interfaces/project.inerface';
 
 @Entity()
-export class ProjectEntity extends BaseEntity {
+export class ProjectEntity extends BaseEntity implements IProject {
   @PrimaryGeneratedColumn({
     type: 'bigint',
     name: 'id',
