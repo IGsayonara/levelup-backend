@@ -6,9 +6,11 @@ import { SkillModule } from './models/skill/skill.module';
 import { PostgrtesDatabaseProviderModule } from './providers/database/postgres/postgrtesDatabase.provider.module';
 import { UserModule } from './models/user/user.module';
 import { AuthModule } from './authentication/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     ProjectModule,
     SkillModule,
     PostgrtesDatabaseProviderModule,

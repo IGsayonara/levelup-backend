@@ -28,7 +28,7 @@ export class AuthController {
   }
 
   @UseGuards(RefreshTokenGuard)
-  @Get('/refresh')
+  @Post('/refresh')
   refreshTokens(@Request() req) {
     const userId = req.user.id;
     const refreshToken = req.user['refreshToken'];
