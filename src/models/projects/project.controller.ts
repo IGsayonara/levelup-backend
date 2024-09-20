@@ -13,7 +13,9 @@ import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Projects')
 @Controller('projects')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}

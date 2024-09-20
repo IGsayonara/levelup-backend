@@ -9,7 +9,9 @@ import {
 import { UserService } from './user.service';
 import { TransformInterceptor } from '../../common/interceptors/transform.interceptor';
 import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @UseInterceptors(TransformInterceptor)
 @Controller('/users')
 export class UserController {

@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Skills')
 @Controller('skills')
 export class SkillController {
   constructor(private readonly skillService: SkillService) {}
