@@ -16,9 +16,10 @@ async function bootstrap() {
 
   // swagger
   const config = new DocumentBuilder()
-    .setTitle('Levelup Api')
-    .setDescription('The cats leveleup description')
+    .setTitle('Levelup API')
+    .setDescription('This is a swagger documentation for levelup API')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

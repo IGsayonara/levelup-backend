@@ -1,10 +1,4 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProjectDto {
@@ -17,10 +11,4 @@ export class CreateProjectDto {
   @IsOptional()
   @IsString()
   readonly description?: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsArray()
-  @IsNumber({}, { each: true })
-  readonly skills?: number[];
 }

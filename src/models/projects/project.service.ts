@@ -52,19 +52,13 @@ export class ProjectService {
 
   async addProject(
     createProjectDto: CreateProjectDto,
-    username,
+    username: string,
   ): Promise<IProject> {
     const project = new ProjectEntity();
 
     const user = await this.userService.findOneByUsername(username);
 
-    const skills: SkillEntity[] = createProjectDto.skills
-      ? await SkillEntity.find({
-          where: {
-            id: In(createProjectDto.skills),
-          },
-        })
-      : [];
+    const skills: SkillEntity[] = [];
 
     project.users.push(user);
     project.title = createProjectDto.title;
