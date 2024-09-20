@@ -7,9 +7,10 @@ import {
 } from 'typeorm';
 import { ProjectEntity } from '../../projects/entities/project.entity';
 import { UserEntity } from '../../user/entities/user.entity';
+import { ISkill } from '../interfaces/skill.inerface';
 
 @Entity()
-export class SkillEntity extends BaseEntity {
+export class SkillEntity extends BaseEntity implements ISkill {
   @PrimaryGeneratedColumn({
     type: 'bigint',
     name: 'id',
