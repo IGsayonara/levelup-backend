@@ -1,6 +1,5 @@
 import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserResponseDTO } from './dto/user-response.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 export class UserService {
@@ -31,7 +30,9 @@ export class UserService {
     );
   }
 
-  async addOne(createUserDto: CreateUserDto): Promise<UserResponseDTO> {
+  async addOne(
+    createUserDto: CreateUserDto,
+  ): Promise<Omit<UserEntity, 'password'>> {
     const user = new UserEntity();
 
     user.username = createUserDto.username;
@@ -41,7 +42,6 @@ export class UserService {
 
     await user.save();
 
-    const { password: _password, ...result } = user;
-    return result;
+    return this.findOneById(user.id);
   }
 }

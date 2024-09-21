@@ -13,9 +13,10 @@ import {
 import { ProjectEntity } from '../../projects/entities/project.entity';
 import { SkillEntity } from '../../skill/entities/skill.entity';
 import { IsOptional } from 'class-validator';
+import { IUser } from '../interfaces/user.interface';
 
 @Entity()
-export class UserEntity extends BaseEntity {
+export class UserEntity extends BaseEntity implements IUser {
   @PrimaryGeneratedColumn({
     type: 'bigint',
     name: 'id',

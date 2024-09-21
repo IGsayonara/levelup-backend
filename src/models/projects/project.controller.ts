@@ -22,7 +22,7 @@ import { ProjectMapper } from './mappers/project.mapper';
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @ApiResponse({ type: ProjectResponseDto })
+  @ApiResponse({ type: Paginated<ProjectResponseDto> })
   @Get()
   async findAll(
     @Paginate() query: PaginateQuery,
@@ -41,13 +41,14 @@ export class ProjectController {
     } as Paginated<ProjectResponseDto>;
   }
 
+  @ApiResponse({ type: ProjectResponseDto })
   @Get('/:id')
   async findOne(
     @Param(
       'id',
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
-    id,
+    id: number,
   ) {
     return await this.projectService.getOne(id);
   }
