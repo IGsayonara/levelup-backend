@@ -9,18 +9,21 @@ import {
 } from '@nestjs/common';
 import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { SkillResponseDto } from './dto/skill-response.dto';
 
 @ApiTags('Skills')
 @Controller('skills')
 export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
+  @ApiResponse({ type: SkillResponseDto })
   @Get()
-  async findAll() {
+  async findAll(): Promise<SkillResponseDto[]> {
     return await this.skillService.getSkills();
   }
 
+  @ApiResponse({ type: SkillResponseDto })
   @Get('/:id')
   async findOne(
     @Param(
