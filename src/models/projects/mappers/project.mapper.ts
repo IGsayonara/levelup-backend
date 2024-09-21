@@ -1,9 +1,7 @@
 import { ProjectEntity } from '../entities/project.entity';
 import { ProjectResponseDto } from '../dto/project-response.dto';
 import { IProject } from '../interfaces/project.inerface';
-import { Injectable } from '@nestjs/common';
 
-@Injectable()
 export class ProjectMapper {
   static toDto(projectEntity: ProjectEntity): ProjectResponseDto {
     return {
