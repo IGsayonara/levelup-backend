@@ -20,7 +20,7 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userService.findOneByUsername(username);
+    const user = await this.userService.findOne({ username });
 
     if (!user) {
       throw new UnauthorizedException('Incorrect username or password');
@@ -59,7 +59,7 @@ export class AuthService {
   async updateRefreshToken(id: number, refreshToken: string) {
     const hashedRefreshToken = await this.hashService.hash(refreshToken);
     await this.userService.updateOne(id, {
-      refresh_token: hashedRefreshToken,
+      refreshToken: hashedRefreshToken,
     });
   }
 
@@ -94,15 +94,15 @@ export class AuthService {
   }
 
   async refreshTokens(userId: number, refreshToken: string) {
-    const user = await this.userService.findOneById(userId);
+    const user = await this.userService.findOne({ id: userId });
 
-    if (!user || !user.refresh_token) {
+    if (!user || !user.refreshToken) {
       throw new ForbiddenException('Access Denied');
     }
 
     const refreshTokenMatches = await this.hashService.compare(
       refreshToken,
-      user.refresh_token,
+      user.refreshToken,
     );
 
     if (!refreshTokenMatches) {

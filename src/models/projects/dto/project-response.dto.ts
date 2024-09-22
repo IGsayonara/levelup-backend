@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { ProjectSkillResponseDto } from './projectSkill-response.dto';
 
 export class ProjectResponseDto {
   @ApiProperty()
@@ -26,13 +27,13 @@ export class ProjectResponseDto {
 
   @ApiProperty()
   @IsArray()
-  skills: [];
+  projectSkills: ProjectSkillResponseDto[];
 
   @ApiProperty()
   @IsDateString()
-  created_at: string;
+  createdAt: Date;
 
   @ApiProperty()
   @IsDateString()
-  updated_at: string;
+  updatedAt: Date;
 }

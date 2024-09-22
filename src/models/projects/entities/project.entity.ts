@@ -2,18 +2,17 @@ import {
   BaseEntity,
   Column,
   Entity,
-  ManyToMany,
-  JoinTable,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
-import { SkillEntity } from '../../skill/entities/skill.entity';
-import { UserEntity } from '../../user/entities/user.entity';
-import { IProject } from '../interfaces/project.inerface';
 
-@Entity()
-export class ProjectEntity extends BaseEntity implements IProject {
+import { ProjectSkillEntity } from './project-skill.entity';
+import { UserProjectEntity } from '../../user/entities/user-project.entity';
+
+@Entity('project')
+export class ProjectEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'bigint',
     name: 'id',
@@ -33,24 +32,22 @@ export class ProjectEntity extends BaseEntity implements IProject {
   })
   description?: string;
 
-  @ManyToMany(() => UserEntity, (user) => user.projects)
-  @JoinTable()
-  users: UserEntity[];
-
-  @ManyToMany(() => SkillEntity, (skill) => skill.projects, { cascade: true })
-  @JoinTable()
-  skills: SkillEntity[];
-
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  public created_at: Date;
+  public createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  public updated_at: Date;
+  public updatedAt: Date;
+
+  @OneToMany(() => ProjectSkillEntity, (projectSkill) => projectSkill.project)
+  projectSkills: ProjectSkillEntity[];
+
+  @OneToMany(() => UserProjectEntity, (userProject) => userProject.project)
+  userProjects: UserProjectEntity[];
 }

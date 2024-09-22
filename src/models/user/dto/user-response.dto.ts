@@ -2,6 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 import { ISkill } from '../../skill/interfaces/skill.inerface';
 import { ProjectResponseDto } from '../../projects/dto/project-response.dto';
+import { UserProjectResponseDto } from './userProject-response.dto';
+import { UserSkillResponseDto } from './userSkill-response.dto';
 
 export class UserResponseDTO {
   @ApiProperty()
@@ -13,8 +15,8 @@ export class UserResponseDTO {
   readonly username: string;
 
   @ApiProperty()
-  readonly projects?: ProjectResponseDto[];
+  readonly userProjects?: UserProjectResponseDto[];
 
   @ApiProperty()
-  readonly skills?: ISkill[];
+  readonly userSkills?: UserSkillResponseDto[];
 }
