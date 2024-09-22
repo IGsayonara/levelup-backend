@@ -12,5 +12,5 @@ export class UpdateUserDto {
 
   @ApiProperty()
   @IsString()
-  readonly refresh_token?: string;
+  readonly refreshToken?: string;
 }

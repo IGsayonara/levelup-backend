@@ -3,14 +3,17 @@ import {
   Column,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProjectEntity } from '../../projects/entities/project.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 import { ISkill } from '../interfaces/skill.inerface';
+import { UserSkillEntity } from '../../user/entities/user-skill.entity';
+import { ProjectSkillEntity } from '../../projects/entities/project-skill.entity';
 
-@Entity()
-export class SkillEntity extends BaseEntity implements ISkill {
+@Entity('skill')
+export class SkillEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'bigint',
     name: 'id',
@@ -24,9 +27,9 @@ export class SkillEntity extends BaseEntity implements ISkill {
   })
   title: string;
 
-  @ManyToMany(() => UserEntity, (user) => user.skills)
-  users: UserEntity[];
+  @OneToMany(() => UserSkillEntity, (userSkill) => userSkill.skill)
+  userSkills: UserSkillEntity[];
 
-  @ManyToMany(() => ProjectEntity, (project) => project.skills)
-  projects: ProjectEntity[];
+  @OneToMany(() => ProjectSkillEntity, (projectSkill) => projectSkill.skill)
+  projectSkills: ProjectSkillEntity[];
 }

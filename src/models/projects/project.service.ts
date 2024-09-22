@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IProject } from './interfaces/project.inerface';
 import { ProjectEntity } from './entities/project.entity';
-import { In, Repository } from 'typeorm';
+import { FindOptionsWhere, In, Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { SkillEntity } from '../skill/entities/skill.entity';
 import { UserService } from '../user/user.service';
@@ -22,48 +22,23 @@ export class ProjectService {
   ) {}
   async getPaginated(query: PaginateQuery): Promise<Paginated<ProjectEntity>> {
     return paginate(query, this.projectRepository, {
-      relations: ['skills'],
+      relations: ['projectSkills'],
       sortableColumns: ['id', 'title'],
       searchableColumns: ['title'],
       filterableColumns: { title: [FilterOperator.ILIKE] },
       nullSort: 'last',
-      defaultSortBy: [['created_at', 'DESC']],
+      defaultSortBy: [['createdAt', 'DESC']],
       defaultLimit: 4,
     });
   }
 
-  async getOne(id: number): Promise<IProject> {
-    const project = await ProjectEntity.findOne({
-      where: {
-        id,
-      },
-      relations: ['skills'],
-    });
-
-    if (!project) {
-      throw new NotFoundException({
-        message: `Can't find any project with id: ${id}`,
-      });
-    }
-
-    return project;
-  }
-
-  async addProject(
-    createProjectDto: CreateProjectDto,
-    username: string,
-  ): Promise<IProject> {
-    const project = new ProjectEntity();
-
-    const user = await this.userService.findOneByUsername(username);
-
-    const skills: SkillEntity[] = [];
-
-    project.users.push(user);
-    project.title = createProjectDto.title;
-    project.description = createProjectDto.description;
-    project.skills = skills;
-
-    return await project.save();
+  async findOne(
+    findOptionsWhere: FindOptionsWhere<ProjectEntity>,
+  ): Promise<IProject | null> {
+    return await ProjectEntity.createQueryBuilder('project')
+      .leftJoinAndSelect('project.projectSkills', 'projectSkill')
+      .leftJoinAndSelect('projectSkill.skill', 'skill')
+      .where(findOptionsWhere)
+      .getOne();
   }
 }

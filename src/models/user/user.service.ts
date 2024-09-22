@@ -1,24 +1,23 @@
 import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { IUser } from './interfaces/user.interface';
+
+import { FindOptionsWhere } from 'typeorm';
 
 export class UserService {
-  async findOneByUsername(username: string): Promise<UserEntity> {
-    return await UserEntity.findOne({
-      where: {
-        username,
-      },
-      relations: ['projects', 'skills'],
-    });
-  }
-
-  async findOneById(id: number): Promise<UserEntity> {
-    return await UserEntity.findOne({
-      where: {
-        id,
-      },
-      relations: ['projects', 'skills'],
-    });
+  async findOne(
+    findOptionsWhere: FindOptionsWhere<UserEntity>,
+  ): Promise<IUser | null> {
+    return await UserEntity.createQueryBuilder('user')
+      .leftJoinAndSelect('user.userProjects', 'userProject')
+      .leftJoinAndSelect('userProject.project', 'project')
+      .leftJoinAndSelect('user.userSkills', 'userSkill')
+      .leftJoinAndSelect('userSkill.skill', 'skill')
+      .leftJoinAndSelect('project.projectSkills', 'projectSkill')
+      .leftJoinAndSelect('projectSkill.skill', 'projectSkillEntity')
+      .where(findOptionsWhere)
+      .getOne();
   }
 
   async updateOne(
@@ -30,18 +29,16 @@ export class UserService {
     );
   }
 
-  async addOne(
-    createUserDto: CreateUserDto,
-  ): Promise<Omit<UserEntity, 'password'>> {
+  async addOne(createUserDto: CreateUserDto): Promise<Omit<IUser, 'password'>> {
     const user = new UserEntity();
 
     user.username = createUserDto.username;
     user.password = createUserDto.password;
-    user.projects = [];
-    user.skills = [];
+    user.userProjects = [];
+    user.userSkills = [];
 
     await user.save();
 
-    return this.findOneById(user.id);
+    return this.findOne({ id: user.id });
   }
 }

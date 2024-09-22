@@ -1,10 +1,10 @@
-import { ISkill } from '../../skill/interfaces/skill.inerface';
+import { IProjectSkill } from './project-skill.interface';
 
 export interface IProject {
   id: number;
   title: string;
   description?: string;
-  skills: ISkill[];
-  created_at: Date;
-  updated_at: Date;
+  projectSkills: IProjectSkill[];
+  createdAt: Date;
+  updatedAt: Date;
 }

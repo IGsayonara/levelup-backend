@@ -1,8 +1,8 @@
 import {
-  Body,
   Controller,
   Get,
   HttpStatus,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -49,17 +49,13 @@ export class ProjectController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
-  ) {
-    return await this.projectService.getOne(id);
-  }
+  ): Promise<ProjectResponseDto> {
+    const project = await this.projectService.findOne({ id });
 
-  @Post('/add')
-  @ApiBearerAuth()
-  @UseGuards(AccessTokenGuard)
-  async create(@Body() createProjectDto: CreateProjectDto, @Req() req) {
-    return await this.projectService.addProject(
-      createProjectDto,
-      req.user.username,
-    );
+    if (!project) {
+      throw new NotFoundException();
+    }
+
+    return project;
   }
 }

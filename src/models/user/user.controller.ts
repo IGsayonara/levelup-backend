@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  NotFoundException,
   Param,
   Req,
   UseGuards,
@@ -11,7 +12,6 @@ import { TransformInterceptor } from '../../common/interceptors/transform.interc
 import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserResponseDTO } from './dto/user-response.dto';
-import { ProjectMapper } from '../projects/mappers/project.mapper';
 import { UserMapper } from './mappers/user.mapper';
 
 @ApiTags('Users')
@@ -25,8 +25,15 @@ export class UserController {
   @ApiResponse({ type: UserResponseDTO })
   @Get('/me')
   async findCurrent(@Req() req): Promise<UserResponseDTO> {
-    const user = await this.userService.findOneByUsername(req.user.username);
-    return UserMapper.toDto(user);
+    const user = await this.userService.findOne({
+      username: req.user.username,
+    });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return user;
   }
 
   @ApiResponse({ type: UserResponseDTO })
@@ -35,7 +42,12 @@ export class UserController {
     @Param('username')
     username: string,
   ): Promise<UserResponseDTO> {
-    const user = await this.userService.findOneByUsername(username);
-    return UserMapper.toDto(user);
+    const user = await this.userService.findOne({ username });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    return user;
   }
 }
