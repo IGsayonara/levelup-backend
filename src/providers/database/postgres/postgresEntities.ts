@@ -4,6 +4,7 @@ import { UserEntity } from '../../../models/user/entities/user.entity';
 import { UserSkillEntity } from '../../../models/user/entities/user-skill.entity';
 import { UserProjectEntity } from '../../../models/user/entities/user-project.entity';
 import { ProjectSkillEntity } from '../../../models/projects/entities/project-skill.entity';
+import { UserProjectSkillEntity } from '../../../models/user/entities/user-project-skill.entity';
 
 export const postgresEntities = [
   SkillEntity,
@@ -12,4 +13,5 @@ export const postgresEntities = [
   UserSkillEntity,
   UserProjectEntity,
   ProjectSkillEntity,
+  UserProjectSkillEntity,
 ];
