@@ -3,10 +3,12 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProjectEntity } from '../../projects/entities/project.entity';
 import { UserEntity } from './user.entity';
+import { UserProjectSkillEntity } from './user-project-skill.entity';
 
 @Entity('user_project')
 export class UserProjectEntity extends BaseEntity {
@@ -18,6 +20,12 @@ export class UserProjectEntity extends BaseEntity {
 
   @ManyToOne(() => ProjectEntity, (project) => project.userProjects)
   project: ProjectEntity;
+
+  @OneToMany(
+    () => UserProjectSkillEntity,
+    (userProjectSkill) => userProjectSkill.userProject,
+  )
+  skills: UserProjectSkillEntity[];
 
   @Column()
   role: string;

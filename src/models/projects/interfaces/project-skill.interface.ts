@@ -1,9 +1,9 @@
-import { ProjectEntity } from '../entities/project.entity';
-import { SkillEntity } from '../../skill/entities/skill.entity';
+import { IProject } from './project.inerface';
+import { ISkill } from '../../skill/interfaces/skill.inerface';
 
 export interface IProjectSkill {
   id: number;
-  project: ProjectEntity;
-  skill: SkillEntity;
+  project: IProject;
+  skill: ISkill;
   description: string;
 }

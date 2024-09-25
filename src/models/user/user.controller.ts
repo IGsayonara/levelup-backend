@@ -12,7 +12,6 @@ import { TransformInterceptor } from '../../common/interceptors/transform.interc
 import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserResponseDTO } from './dto/user-response.dto';
-import { UserMapper } from './mappers/user.mapper';
 
 @ApiTags('Users')
 @ApiBearerAuth()
