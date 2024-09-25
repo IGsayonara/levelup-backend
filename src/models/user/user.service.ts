@@ -9,7 +9,7 @@ export class UserService {
   async findOne(
     findOptionsWhere: FindOptionsWhere<UserEntity>,
   ): Promise<IUser | null> {
-    const user = await UserEntity.createQueryBuilder('user')
+    return await UserEntity.createQueryBuilder('user')
       .leftJoinAndSelect('user.userProjects', 'userProject')
       .leftJoinAndSelect('userProject.project', 'project')
       .leftJoinAndSelect('user.userSkills', 'userSkill')
@@ -20,10 +20,6 @@ export class UserService {
       .leftJoinAndSelect('userProjectSkills.skill', 'userProjectSkillEntity')
       .where(findOptionsWhere)
       .getOne();
-
-    console.log(user);
-
-    return user;
   }
 
   async updateOne(
