@@ -17,11 +17,12 @@ export class UserResponseDTO {
   readonly username: string;
 
   @ApiProperty()
+  @Type(() => UserProjectResponseDto)
   @Expose()
-  readonly userProjects?: UserProjectResponseDto[];
+  userProjects?: UserProjectResponseDto[];
 
   @ApiProperty()
   @Type(() => UserSkillResponseDto)
   @Expose()
-  readonly userSkills?: UserSkillResponseDto[];
+  userSkills?: UserSkillResponseDto[];
 }

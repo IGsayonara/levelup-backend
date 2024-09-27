@@ -1,6 +1,6 @@
 import { SkillResponseDto } from '../../skill/dto/skill-response.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 export class UserSkillResponseDto {
   @ApiProperty()
@@ -8,6 +8,7 @@ export class UserSkillResponseDto {
   id: number;
 
   @ApiProperty()
+  @Type(() => SkillResponseDto)
   @Expose()
   skill: SkillResponseDto;
 
