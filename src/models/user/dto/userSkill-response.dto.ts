@@ -10,7 +10,7 @@ export class UserSkillResponseDto {
   @ApiProperty()
   @Type(() => SkillResponseDto)
   @Expose()
-  skill: SkillResponseDto;
+  skill?: SkillResponseDto;
 
   @ApiProperty()
   @Expose()

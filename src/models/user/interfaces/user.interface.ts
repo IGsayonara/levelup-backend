@@ -5,7 +5,16 @@ export interface IUser {
   id: number;
   username: string;
   password: string;
-  projects?: IUserProject[];
-  skills?: IUserSkill[];
+  userProjects?: IUserProject[];
+  userSkills?: IUserSkill[];
   refreshToken: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  profileImage?: string;
+  bio?: string;
+  socialLinks?: { [key: string]: string };
+  phoneNumber?: string;
+  address?: string;
+  dateOfBirth?: Date;
 }

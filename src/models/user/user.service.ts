@@ -4,22 +4,26 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { IUser } from './interfaces/user.interface';
 
 import { FindOptionsWhere } from 'typeorm';
+import { UserMapper } from './mappers/user.mapper';
 
 export class UserService {
   async findOne(
     findOptionsWhere: FindOptionsWhere<UserEntity>,
   ): Promise<IUser | null> {
-    return await UserEntity.createQueryBuilder('user')
-      .leftJoinAndSelect('user.userProjects', 'userProject')
-      .leftJoinAndSelect('userProject.project', 'project')
-      .leftJoinAndSelect('user.userSkills', 'userSkill')
-      .leftJoinAndSelect('userSkill.skill', 'skill')
-      .leftJoinAndSelect('project.projectSkills', 'projectSkill')
-      .leftJoinAndSelect('projectSkill.skill', 'projectSkillEntity')
-      .leftJoinAndSelect('userProject.skills', 'userProjectSkills')
-      .leftJoinAndSelect('userProjectSkills.skill', 'userProjectSkillEntity')
-      .where(findOptionsWhere)
-      .getOne();
+    return UserMapper.entityToInterface(
+      await UserEntity.createQueryBuilder('user')
+        .leftJoinAndSelect('user.userProjects', 'userProject')
+        .leftJoinAndSelect('userProject.project', 'project')
+        .leftJoinAndSelect('user.userProfile', 'userProfile')
+        .leftJoinAndSelect('user.userSkills', 'userSkill')
+        .leftJoinAndSelect('userSkill.skill', 'skill')
+        .leftJoinAndSelect('project.projectSkills', 'projectSkill')
+        .leftJoinAndSelect('projectSkill.skill', 'projectSkillEntity')
+        .leftJoinAndSelect('userProject.skills', 'userProjectSkills')
+        .leftJoinAndSelect('userProjectSkills.skill', 'userProjectSkillEntity')
+        .where(findOptionsWhere)
+        .getOne(),
+    );
   }
 
   async updateOne(
