@@ -32,4 +32,7 @@ export class UserProjectEntity extends BaseEntity {
 
   @Column()
   description: string;
+
+  @Column({ type: 'text', nullable: true })
+  feedback: string;
 }

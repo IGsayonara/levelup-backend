@@ -6,10 +6,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 import { UserSkillEntity } from './user-skill.entity';
 import { UserProjectEntity } from './user-project.entity';
+import { UserProfileEntity } from './user-profile.entity';
 
 @Entity('user')
 export class UserEntity extends BaseEntity {
@@ -49,4 +51,7 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => UserProjectEntity, (userProject) => userProject.user)
   userProjects: UserProjectEntity[];
+
+  @OneToOne(() => UserProfileEntity, (userProfile) => userProfile.user)
+  userProfile: UserProfileEntity;
 }
