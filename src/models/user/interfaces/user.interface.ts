@@ -13,8 +13,8 @@ export interface IUser {
   email?: string;
   profileImage?: string;
   bio?: string;
-  socialLinks?: { [key: string]: string };
   phoneNumber?: string;
   address?: string;
   dateOfBirth?: Date;
+  userProfile?: any;
 }

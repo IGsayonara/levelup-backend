@@ -31,9 +31,6 @@ export class UserProfileEntity extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   bio: string | null;
 
-  @Column({ type: 'json', nullable: true })
-  socialLinks: { [key: string]: string } | null;
-
   @Column({ type: 'text', nullable: true })
   phoneNumber: string | null;
 

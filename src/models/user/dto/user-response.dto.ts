@@ -65,12 +65,6 @@ export class UserResponseDTO {
   @ApiProperty()
   @Expose()
   @IsOptional()
-  @IsObject()
-  socialLinks?: { [key: string]: string };
-
-  @ApiProperty()
-  @Expose()
-  @IsOptional()
   @IsString()
   phoneNumber?: string;
 

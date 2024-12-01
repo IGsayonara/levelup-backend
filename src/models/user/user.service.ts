@@ -5,6 +5,8 @@ import { IUser } from './interfaces/user.interface';
 
 import { FindOptionsWhere } from 'typeorm';
 import { UserMapper } from './mappers/user.mapper';
+import { UserProfileEntity } from './entities/user-profile.entity';
+import { NotFoundException } from '@nestjs/common';
 
 export class UserService {
   async findOne(
@@ -27,12 +29,56 @@ export class UserService {
   }
 
   async updateOne(
-    id: number,
+    findOptionsWhere: FindOptionsWhere<UserEntity>,
     updateUserDto: UpdateUserDto,
-  ): Promise<UserEntity> {
-    return await UserEntity.update(id, updateUserDto).then(
+  ): Promise<IUser> {
+    return await UserEntity.update(findOptionsWhere, updateUserDto).then(
       (updateResult) => updateResult.raw[0],
     );
+  }
+
+  async updateProfile(
+    findOptionsWhere: FindOptionsWhere<UserEntity>,
+    updateUserProfileDto: Partial<UserProfileEntity>,
+  ): Promise<IUser | null> {
+    const user = await UserEntity.createQueryBuilder('user')
+      .leftJoinAndSelect('user.userProfile', 'userProfile')
+      .where(findOptionsWhere)
+      .getOne();
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    await UserProfileEntity.createQueryBuilder('userProfile')
+      .update()
+      .set(updateUserProfileDto)
+      .where({ id: user.userProfile.id })
+      .execute();
+
+    return this.findOne(findOptionsWhere);
+  }
+
+  async updateProfilePicture(
+    findOptionsWhere: FindOptionsWhere<UserEntity>,
+    path: string,
+  ): Promise<IUser> {
+    const user = await UserEntity.createQueryBuilder('user')
+      .leftJoinAndSelect('user.userProfile', 'userProfile')
+      .where(findOptionsWhere)
+      .getOne();
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    await UserProfileEntity.createQueryBuilder('userProfile')
+      .update()
+      .set({ profileImage: path })
+      .where({ id: user.userProfile.id })
+      .execute();
+
+    return this.findOne(findOptionsWhere);
   }
 
   async addOne(createUserDto: CreateUserDto): Promise<Omit<IUser, 'password'>> {
