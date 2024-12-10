@@ -76,6 +76,8 @@ export class UserController {
       req.body as UpdateUserProfileDto,
     );
   }
+
+  @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Put('/me/profileImage')
   @UseInterceptors(
