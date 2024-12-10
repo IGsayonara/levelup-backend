@@ -7,6 +7,7 @@ import { FindOptionsWhere } from 'typeorm';
 import { UserMapper } from './mappers/user.mapper';
 import { UserProfileEntity } from './entities/user-profile.entity';
 import { NotFoundException } from '@nestjs/common';
+import { UserProjectEntity } from './entities/user-project.entity';
 
 export class UserService {
   async findOne(
@@ -92,5 +93,18 @@ export class UserService {
     await user.save();
 
     return this.findOne({ id: user.id });
+  }
+
+  async addProjectToUser(userId: number, projectId: number): Promise<void> {
+    await UserProjectEntity.createQueryBuilder()
+      .insert()
+      .into(UserProjectEntity)
+      .values({
+        user: userId as any,
+        project: projectId as any,
+        role: 'developer',
+        description: `meow`,
+      })
+      .execute();
   }
 }
