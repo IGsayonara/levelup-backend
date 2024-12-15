@@ -96,8 +96,6 @@ export class UserController {
     }),
   )
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req) {
-    // Log file information to the console
-    console.log(file);
     const path = join(uploadDirectory, file.filename);
 
     await this.userService.updateProfilePicture(
@@ -113,5 +111,12 @@ export class UserController {
       filename: file.filename,
       path, // Full path to the uploaded file
     };
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @Put('/userProjectSkill/:id')
+  async updateUserProjectSkill(@Req() req, @Param('id') id: number) {
+    return await this.userService.updateUserProjectSkill({ id }, req.body);
   }
 }

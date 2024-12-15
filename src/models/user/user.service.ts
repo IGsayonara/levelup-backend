@@ -8,6 +8,8 @@ import { UserMapper } from './mappers/user.mapper';
 import { UserProfileEntity } from './entities/user-profile.entity';
 import { NotFoundException } from '@nestjs/common';
 import { UserProjectEntity } from './entities/user-project.entity';
+import { ProjectSkillEntity } from '../projects/entities/project-skill.entity';
+import { UserProjectSkillEntity } from './entities/user-project-skill.entity';
 
 export class UserService {
   async findOne(
@@ -106,5 +108,24 @@ export class UserService {
         description: `meow`,
       })
       .execute();
+  }
+
+  async updateUserProjectSkill(
+    findOptionsWhere: FindOptionsWhere<UserProjectSkillEntity>,
+    updateUserProjectSkillDto: Partial<UserProjectSkillEntity>,
+  ): Promise<any> {
+    const userProjectSkill = await UserProjectSkillEntity.findOne({
+      where: findOptionsWhere,
+    });
+
+    console.log(userProjectSkill, updateUserProjectSkillDto);
+
+    await UserProjectSkillEntity.createQueryBuilder()
+      .update()
+      .set(updateUserProjectSkillDto)
+      .where({ id: userProjectSkill.id })
+      .execute();
+
+    return await UserProjectSkillEntity.findOne({ where: findOptionsWhere });
   }
 }
