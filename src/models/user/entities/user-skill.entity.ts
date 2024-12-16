@@ -19,9 +19,9 @@ export class UserSkillEntity extends BaseEntity {
   @ManyToOne(() => SkillEntity, (skill) => skill.userSkills)
   skill: SkillEntity;
 
-  @Column()
+  @Column({ nullable: true })
   learnedAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 }
