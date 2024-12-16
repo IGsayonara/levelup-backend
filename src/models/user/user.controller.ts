@@ -3,8 +3,10 @@ import {
   Get,
   NotFoundException,
   Param,
+  Post,
   Put,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -116,7 +118,20 @@ export class UserController {
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Put('/userProjectSkill/:id')
-  async updateUserProjectSkill(@Req() req, @Param('id') id: number) {
+  async updateUserProjectSkill(@Req() req: any, @Param('id') id: number) {
     return await this.userService.updateUserProjectSkill({ id }, req.body);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @Post('/userProjectSkill/add')
+  async addUserProjectSkill(@Req() req: any) {
+    const { userProjectId, skillId } = req.body;
+
+    if (!userProjectId || !skillId) {
+      throw new NotFoundException('Missing userProjectId or skillId');
+    }
+
+    return await this.userService.addSkillToUserProject(userProjectId, skillId);
   }
 }

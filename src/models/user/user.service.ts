@@ -118,8 +118,6 @@ export class UserService {
       where: findOptionsWhere,
     });
 
-    console.log(userProjectSkill, updateUserProjectSkillDto);
-
     await UserProjectSkillEntity.createQueryBuilder()
       .update()
       .set(updateUserProjectSkillDto)
@@ -127,5 +125,23 @@ export class UserService {
       .execute();
 
     return await UserProjectSkillEntity.findOne({ where: findOptionsWhere });
+  }
+
+  async addSkillToUserProject(
+    userProjectId: number,
+    skillId: number,
+  ): Promise<UserProjectSkillEntity> {
+    const userProjectSkill = await UserProjectSkillEntity.createQueryBuilder()
+      .insert()
+      .into(UserProjectSkillEntity)
+      .values({
+        skill: +skillId as any,
+        userProject: +userProjectId as any,
+        description: '',
+      })
+      .returning('*') // Ensure the created entity is returned
+      .execute();
+
+    return userProjectSkill.generatedMaps[0] as UserProjectSkillEntity;
   }
 }
