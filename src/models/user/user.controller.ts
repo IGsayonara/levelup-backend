@@ -134,4 +134,11 @@ export class UserController {
 
     return await this.userService.addSkillToUserProject(userProjectId, skillId);
   }
+
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @Post('/userSkill/add/:skillId')
+  async addUserSkill(@Req() req: any, @Param('skillId') skillId: number) {
+    return await this.userService.addUserSkill(req.user.id, skillId);
+  }
 }

@@ -10,6 +10,7 @@ import { NotFoundException } from '@nestjs/common';
 import { UserProjectEntity } from './entities/user-project.entity';
 import { ProjectSkillEntity } from '../projects/entities/project-skill.entity';
 import { UserProjectSkillEntity } from './entities/user-project-skill.entity';
+import { UserSkillEntity } from './entities/user-skill.entity';
 
 export class UserService {
   async findOne(
@@ -143,5 +144,18 @@ export class UserService {
       .execute();
 
     return userProjectSkill.generatedMaps[0] as UserProjectSkillEntity;
+  }
+
+  async addUserSkill(userId: number, skillId: number) {
+    const userSkill = await UserSkillEntity.createQueryBuilder()
+      .insert()
+      .values({
+        skill: +skillId as any,
+        user: userId as any,
+      })
+      .returning('*')
+      .execute();
+
+    return userSkill.generatedMaps[0] as UserSkillEntity;
   }
 }
