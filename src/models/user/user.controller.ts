@@ -141,4 +141,11 @@ export class UserController {
   async addUserSkill(@Req() req: any, @Param('skillId') skillId: number) {
     return await this.userService.addUserSkill(req.user.id, skillId);
   }
+
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @Put('/userProject/edit/:id')
+  async updateUserProject(@Req() req: any, @Param('id') id: number) {
+    return await this.userService.updateUserProject({ id }, req.body);
+  }
 }

@@ -32,6 +32,12 @@ export class ProjectEntity extends BaseEntity {
   })
   description?: string;
 
+  @Column({
+    type: 'text',
+    default: '',
+  })
+  shortDescription: string;
+
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
