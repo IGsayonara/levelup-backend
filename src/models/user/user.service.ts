@@ -11,6 +11,7 @@ import { UserProjectEntity } from './entities/user-project.entity';
 import { ProjectSkillEntity } from '../projects/entities/project-skill.entity';
 import { UserProjectSkillEntity } from './entities/user-project-skill.entity';
 import { UserSkillEntity } from './entities/user-skill.entity';
+import { IUserProject } from './interfaces/user-project.interface';
 
 export class UserService {
   async findOne(
@@ -115,14 +116,10 @@ export class UserService {
     findOptionsWhere: FindOptionsWhere<UserProjectSkillEntity>,
     updateUserProjectSkillDto: Partial<UserProjectSkillEntity>,
   ): Promise<any> {
-    const userProjectSkill = await UserProjectSkillEntity.findOne({
-      where: findOptionsWhere,
-    });
-
     await UserProjectSkillEntity.createQueryBuilder()
       .update()
       .set(updateUserProjectSkillDto)
-      .where({ id: userProjectSkill.id })
+      .where(findOptionsWhere)
       .execute();
 
     return await UserProjectSkillEntity.findOne({ where: findOptionsWhere });
@@ -144,6 +141,19 @@ export class UserService {
       .execute();
 
     return userProjectSkill.generatedMaps[0] as UserProjectSkillEntity;
+  }
+
+  async updateUserProject(
+    findOptionsWhere: FindOptionsWhere<UserProjectEntity>,
+    updateUserProjectDto: Partial<UserProjectEntity>,
+  ): Promise<IUserProject> {
+    await UserProjectEntity.createQueryBuilder()
+      .update()
+      .set(updateUserProjectDto)
+      .where(findOptionsWhere)
+      .execute();
+
+    return await UserProjectEntity.findOne({ where: findOptionsWhere });
   }
 
   async addUserSkill(userId: number, skillId: number) {
