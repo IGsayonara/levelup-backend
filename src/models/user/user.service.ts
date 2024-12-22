@@ -168,4 +168,31 @@ export class UserService {
 
     return userSkill.generatedMaps[0] as UserSkillEntity;
   }
+
+  async deleteUserProject(
+    findOptionsWhere: FindOptionsWhere<UserProjectEntity>,
+  ): Promise<void> {
+    await UserProjectEntity.createQueryBuilder()
+      .delete()
+      .where(findOptionsWhere)
+      .execute();
+  }
+
+  async deleteUserProjectSkill(
+    findOptionsWhere: FindOptionsWhere<UserProjectSkillEntity>,
+  ): Promise<void> {
+    await UserProjectSkillEntity.createQueryBuilder()
+      .delete()
+      .where(findOptionsWhere)
+      .execute();
+  }
+
+  async deleteUserSkill(
+    findOptionsWhere: FindOptionsWhere<UserSkillEntity>,
+  ): Promise<void> {
+    await UserSkillEntity.createQueryBuilder()
+      .delete()
+      .where(findOptionsWhere)
+      .execute();
+  }
 }
