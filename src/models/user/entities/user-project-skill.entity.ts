@@ -15,7 +15,10 @@ export class UserProjectSkillEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => UserProjectEntity, (userProject) => userProject.skills)
+  @ManyToOne(() => UserProjectEntity, (userProject) => userProject.skills, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   userProject: UserProjectEntity;
 
   @ManyToOne(() => SkillEntity, (skill) => skill.userProjectSkills)

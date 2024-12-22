@@ -24,6 +24,7 @@ export class UserProjectEntity extends BaseEntity {
   @OneToMany(
     () => UserProjectSkillEntity,
     (userProjectSkill) => userProjectSkill.userProject,
+    { cascade: true, onDelete: 'CASCADE' },
   )
   skills: UserProjectSkillEntity[];
 

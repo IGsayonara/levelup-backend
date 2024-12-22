@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -147,5 +148,26 @@ export class UserController {
   @Put('/userProject/edit/:id')
   async updateUserProject(@Req() req: any, @Param('id') id: number) {
     return await this.userService.updateUserProject({ id }, req.body);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @Delete('/userProject/delete/:id')
+  async deleteUserProject(@Req() req: any, @Param('id') id: number) {
+    return await this.userService.deleteUserProject({ id });
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @Delete('/userSkill/delete/:id')
+  async deleteUserSkill(@Req() req: any, @Param('id') id: number) {
+    return await this.userService.deleteUserSkill({ id });
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @Delete('/userProjectSkill/delete/:id')
+  async deleteUserProjectSkill(@Req() req: any, @Param('id') id: number) {
+    return await this.userService.deleteUserProjectSkill({ id });
   }
 }
