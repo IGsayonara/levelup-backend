@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 import { ProjectSkillEntity } from './project-skill.entity';
-import { UserProjectEntity } from '../../user/entities/user-project.entity';
+import { UserProjectEntity } from '../../user-Project/entities/user-project.entity';
 
 @Entity('project')
 export class ProjectEntity extends BaseEntity {

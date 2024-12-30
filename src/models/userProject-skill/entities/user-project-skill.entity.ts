@@ -6,8 +6,8 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
-import { UserProjectEntity } from './user-project.entity';
 import { SkillEntity } from '../../skill/entities/skill.entity';
+import { UserProjectEntity } from '../../user-Project/entities/user-project.entity';
 
 @Entity('user_project_skill')
 @Unique(['userProject', 'skill'])

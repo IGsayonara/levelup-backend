@@ -9,15 +9,21 @@ import { AuthModule } from './authentication/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { UserProjectModule } from './models/user-Project/userProject.module';
+import { UserProjectSkillModule } from './models/userProject-skill/userProject-skill.module';
+import { UserSkillModule } from './models/user-skill/user-skill.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    ProjectModule,
-    SkillModule,
-    PostgrtesDatabaseProviderModule,
-    UserModule,
     AuthModule,
+    UserModule,
+    ProjectModule,
+    UserProjectModule,
+    SkillModule,
+    UserSkillModule,
+    UserProjectSkillModule,
+    PostgrtesDatabaseProviderModule,
+    ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'), // Serve files from 'uploads' directory
       serveRoot: '/uploads', // URL prefix for serving static files

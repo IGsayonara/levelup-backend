@@ -1,4 +1,4 @@
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 import { SkillEntity } from '../../skill/entities/skill.entity';
 
 export interface IUserSkill {
