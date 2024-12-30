@@ -1,5 +1,5 @@
-import { IUserSkill } from './user-skill.interface';
-import { IUserProject } from './user-project.interface';
+import { IUserSkill } from '../../user-skill/interfaces/user-skill.interface';
+import { IUserProject } from '../../user-Project/interfaces/user-project.interface';
 
 export interface IUser {
   id: number;

@@ -1,15 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNumber,
-  IsString,
-  IsOptional,
-  IsDate,
-  IsObject,
-} from 'class-validator';
+import { IsNumber, IsString, IsOptional, IsDate } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 
-import { UserProjectResponseDto } from './userProject-response.dto';
-import { UserSkillResponseDto } from './userSkill-response.dto';
+import { UserSkillResponseDto } from '../../user-skill/dto/user-skill.response.dto';
+import { UserProjectResponseDto } from '../../user-Project/dto/userProject-response.dto';
 
 export class UserResponseDTO {
   @ApiProperty()

@@ -59,19 +59,6 @@ export class ProjectController {
   @ApiBearerAuth()
   @ApiResponse({ type: ProjectResponseDto })
   @UseGuards(AccessTokenGuard)
-  @Post('/my/add')
-  async addOne(@Req() req) {
-    const userId = req.user.id;
-    const project = await this.projectService.addOne(
-      req.body as CreateProjectDto,
-    );
-
-    await this.userService.addProjectToUser(userId, project.id);
-  }
-
-  @ApiBearerAuth()
-  @ApiResponse({ type: ProjectResponseDto })
-  @UseGuards(AccessTokenGuard)
   @Put('/edit/:id')
   async updateOne(
     @Req() req,

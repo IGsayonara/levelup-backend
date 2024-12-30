@@ -9,9 +9,9 @@ import {
 import { ProjectEntity } from '../../projects/entities/project.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 import { ISkill } from '../interfaces/skill.inerface';
-import { UserSkillEntity } from '../../user/entities/user-skill.entity';
+import { UserSkillEntity } from '../../user-skill/entities/user-skill.entity';
 import { ProjectSkillEntity } from '../../projects/entities/project-skill.entity';
-import { UserProjectSkillEntity } from '../../user/entities/user-project-skill.entity';
+import { UserProjectSkillEntity } from '../../userProject-skill/entities/user-project-skill.entity';
 
 @Entity('skill')
 export class SkillEntity extends BaseEntity {

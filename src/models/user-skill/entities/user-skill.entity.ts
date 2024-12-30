@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { SkillEntity } from '../../skill/entities/skill.entity';
-import { UserEntity } from './user.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('user_skill')
 export class UserSkillEntity extends BaseEntity {

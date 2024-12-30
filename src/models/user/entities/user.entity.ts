@@ -9,9 +9,9 @@ import {
   OneToOne,
 } from 'typeorm';
 
-import { UserSkillEntity } from './user-skill.entity';
-import { UserProjectEntity } from './user-project.entity';
+import { UserSkillEntity } from '../../user-skill/entities/user-skill.entity';
 import { UserProfileEntity } from './user-profile.entity';
+import { UserProjectEntity } from '../../user-Project/entities/user-project.entity';
 
 @Entity('user')
 export class UserEntity extends BaseEntity {
