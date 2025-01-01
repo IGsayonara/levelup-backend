@@ -55,8 +55,7 @@ export class UserProfileController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: (req, file, callback) => {
-          // Specify where to save the uploaded file
+        destination: (_req, _file, callback) => {
           callback(null, uploadDirectory);
         },
         filename: (req, file, callback) => {

@@ -14,7 +14,7 @@ export class UserMapper {
       firstName: user.userProfile?.firstName,
       lastName: user.userProfile?.lastName,
       email: user.userProfile?.email,
-      profileImage: 'http://localhost:3000/' + user.userProfile?.profileImage,
+      profileImage: user.userProfile?.profileImage,
       bio: user.userProfile?.bio,
       phoneNumber: user.userProfile?.phoneNumber,
       address: user.userProfile?.address,
