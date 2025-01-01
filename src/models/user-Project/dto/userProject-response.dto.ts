@@ -1,4 +1,3 @@
-import { UserEntity } from '../../user/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ProjectResponseDto } from '../../projects/dto/project-response.dto';
@@ -9,11 +8,7 @@ export class UserProjectResponseDto {
   @Expose()
   id: number;
 
-  @ApiProperty()
-  @Expose()
-  user: UserEntity;
-
-  @ApiProperty()
+  @ApiProperty({ type: ProjectResponseDto })
   @Expose()
   @Type(() => ProjectResponseDto)
   project: ProjectResponseDto;
@@ -26,7 +21,7 @@ export class UserProjectResponseDto {
   @Expose()
   description: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: UserProjectSkillResponseDto, isArray: true })
   @Type(() => UserProjectSkillResponseDto)
   @Expose()
   skills: UserProjectSkillResponseDto[];
