@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IProject } from './interfaces/project.inerface';
 import { ProjectEntity } from './entities/project.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { UserService } from '../user/user.service';
+import { UserService } from '../user/services/user.service';
 import {
   FilterOperator,
   paginate,
