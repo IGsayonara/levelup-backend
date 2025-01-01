@@ -8,11 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // cors
   app.enableCors({
-    origin: [
-      'http://localhost:8080',
-      'http://luckyigor.world',
-      'http://dev.luckyigor.world',
-    ],
+    origin: ['http://localhost:8080'],
   });
 
   // swagger
@@ -35,6 +31,6 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
-  await app.listen(3000);
+  await app.listen(process.env.APP_PORT);
 }
 bootstrap();

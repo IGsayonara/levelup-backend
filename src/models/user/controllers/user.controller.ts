@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  HttpStatus,
   NotFoundException,
   Param,
   Req,
@@ -19,7 +20,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @ApiBearerAuth()
-  @ApiResponse({ type: UserResponseDTO })
+  @ApiResponse({ type: UserResponseDTO, status: HttpStatus.OK })
   @ResponseType(UserResponseDTO)
   @UseGuards(AccessTokenGuard)
   @Get('/me')

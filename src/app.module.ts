@@ -25,8 +25,8 @@ import { UserSkillModule } from './models/user-skill/user-skill.module';
     PostgrtesDatabaseProviderModule,
     ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'), // Serve files from 'uploads' directory
-      serveRoot: '/uploads', // URL prefix for serving static files
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
     }),
   ],
   controllers: [AppController],

@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString, IsOptional, IsDate } from 'class-validator';
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
 import { UserSkillResponseDto } from '../../user-skill/dto/user-skill.response.dto';
 import { UserProjectResponseDto } from '../../user-Project/dto/userProject-response.dto';
+import * as process from 'node:process';
 
 export class UserResponseDTO {
   @ApiProperty()
@@ -48,6 +49,7 @@ export class UserResponseDTO {
   @Expose()
   @IsOptional()
   @IsString()
+  @Transform(({ value }) => value && `${process.env.UPLOADS_BASE_URL}/${value}`)
   profileImage?: string;
 
   @ApiProperty()
