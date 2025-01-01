@@ -3,7 +3,7 @@ import { Expose, Type } from 'class-transformer';
 import { SkillResponseDto } from '../../skill/dto/skill-response.dto';
 
 export class UserProjectSkillResponseDto {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @Expose()
   id: number;
 
@@ -12,7 +12,7 @@ export class UserProjectSkillResponseDto {
   @Expose()
   skill: SkillResponseDto;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Brief description' })
   @Expose()
   description: string;
 }

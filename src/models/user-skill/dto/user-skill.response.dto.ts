@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 
 export class UserSkillResponseDto {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @Expose()
   id: number;
 
@@ -16,7 +16,7 @@ export class UserSkillResponseDto {
   @Expose()
   learnedAt: Date;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Brief description' })
   @Expose()
   description: string;
 }

@@ -7,12 +7,12 @@ import { UserProjectResponseDto } from '../../user-Project/dto/userProject-respo
 import * as process from 'node:process';
 
 export class UserResponseDTO {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @Expose()
   @IsNumber()
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'noffirl' })
   @Expose()
   @IsString()
   readonly username: string;
@@ -27,44 +27,44 @@ export class UserResponseDTO {
   @Expose()
   userSkills?: UserSkillResponseDto[];
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Ihor' })
   @Expose()
   @IsOptional()
   @IsString()
   firstName?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Didunik' })
   @Expose()
   @IsOptional()
   @IsString()
   lastName?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'diduniki@gmail.com' })
   @Expose()
   @IsOptional()
   @IsString()
   email?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: `${process.env.UPLOADS_BASE_URL}/image.jpg` })
   @Expose()
   @IsOptional()
   @IsString()
   @Transform(({ value }) => value && `${process.env.UPLOADS_BASE_URL}/${value}`)
   profileImage?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'bio in html format' })
   @Expose()
   @IsOptional()
   @IsString()
   bio?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '+353-(085)-194-55-49' })
   @Expose()
   @IsOptional()
   @IsString()
   phoneNumber?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Bulgaria, Varna' })
   @Expose()
   @IsOptional()
   @IsString()

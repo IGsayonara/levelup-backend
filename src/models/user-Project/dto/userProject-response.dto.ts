@@ -4,7 +4,7 @@ import { ProjectResponseDto } from '../../projects/dto/project-response.dto';
 import { UserProjectSkillResponseDto } from '../../userProject-skill/dto/userProjectSkill-response.dto';
 
 export class UserProjectResponseDto {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @Expose()
   id: number;
 
@@ -13,11 +13,11 @@ export class UserProjectResponseDto {
   @Type(() => ProjectResponseDto)
   project: ProjectResponseDto;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Front-End' })
   @Expose()
   role: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Brief description' })
   @Expose()
   description: string;
 
