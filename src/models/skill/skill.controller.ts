@@ -9,21 +9,23 @@ import {
   Post,
 } from '@nestjs/common';
 import { SkillService } from './skill.service';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SkillResponseDto } from './dto/skill-response.dto';
+import { isArray } from 'class-validator';
 
 @ApiTags('Skills')
 @Controller('skills')
 export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
-  @ApiResponse({ type: SkillResponseDto })
+  @ApiResponse({ type: SkillResponseDto, isArray: true, status: HttpStatus.OK })
   @Get()
   async findAll(): Promise<SkillResponseDto[]> {
     return await this.skillService.getSkills();
   }
 
-  @ApiResponse({ type: SkillResponseDto })
+  @ApiResponse({ type: SkillResponseDto, status: HttpStatus.OK })
+  @ApiNotFoundResponse()
   @Get('/:id')
   async findOne(
     @Param(
