@@ -24,7 +24,7 @@ if (!fs.existsSync(uploadDirectory)) {
 }
 
 @ApiTags('User - Project')
-@Controller('/user-project')
+@Controller('/userProject')
 export class UserProjectController {
   constructor(
     private userProjectService: UserProjectService,
@@ -32,23 +32,9 @@ export class UserProjectController {
   ) {}
 
   @ApiBearerAuth()
-  @UseGuards(AccessTokenGuard)
-  @Put('/userProject/edit/:id')
-  async updateUserProject(@Req() req: any, @Param('id') id: number) {
-    return await this.userProjectService.updateUserProject({ id }, req.body);
-  }
-
-  @ApiBearerAuth()
-  @UseGuards(AccessTokenGuard)
-  @Delete('/userProject/delete/:id')
-  async deleteUserProject(@Req() req: any, @Param('id') id: number) {
-    return await this.userProjectService.deleteUserProject({ id });
-  }
-
-  @ApiBearerAuth()
   @ApiResponse({ type: ProjectResponseDto })
   @UseGuards(AccessTokenGuard)
-  @Post('/my/add')
+  @Post('/')
   async addOne(@Req() req) {
     const userId = req.user.id;
     const project = await this.projectService.addOne(
@@ -56,5 +42,19 @@ export class UserProjectController {
     );
 
     await this.userProjectService.addProjectToUser(userId, project.id);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @Put('/:id')
+  async updateUserProject(@Req() req: any, @Param('id') id: number) {
+    return await this.userProjectService.updateUserProject({ id }, req.body);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AccessTokenGuard)
+  @Delete('/:id')
+  async deleteUserProject(@Req() req: any, @Param('id') id: number) {
+    return await this.userProjectService.deleteUserProject({ id });
   }
 }

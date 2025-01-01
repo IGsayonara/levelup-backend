@@ -5,7 +5,6 @@ import {
   NotFoundException,
   Param,
   ParseIntPipe,
-  Post,
   Put,
   Req,
   UseGuards,
@@ -17,7 +16,7 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProjectResponseDto } from './dto/project-response.dto';
 import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
 import { CreateProjectDto } from './dto/create-project.dto';
-import { UserService } from '../user/user.service';
+import { UserService } from '../user/services/user.service';
 
 @ApiTags('Projects')
 @Controller('projects')
@@ -59,7 +58,7 @@ export class ProjectController {
   @ApiBearerAuth()
   @ApiResponse({ type: ProjectResponseDto })
   @UseGuards(AccessTokenGuard)
-  @Put('/edit/:id')
+  @Put('/:id')
   async updateOne(
     @Req() req,
     @Param(

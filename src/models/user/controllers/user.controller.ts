@@ -12,7 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 import { AccessTokenGuard } from '../../../authentication/guards/access-token-guard';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserResponseDTO } from '../dto/user-response.dto';
