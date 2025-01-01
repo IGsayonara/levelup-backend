@@ -19,7 +19,7 @@ export class UserProjectSkillController {
 
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
-  @Post('/userProjectSkill/')
+  @Post('/')
   async addUserProjectSkill(@Req() req: any) {
     const { userProjectId, skillId } = req.body;
 
@@ -35,7 +35,7 @@ export class UserProjectSkillController {
 
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
-  @Put('/userProjectSkill/:id')
+  @Put('/:id')
   async updateUserProjectSkill(@Req() req: any, @Param('id') id: number) {
     return await this.userProjectSkillService.updateUserProjectSkill(
       { id },
@@ -45,7 +45,7 @@ export class UserProjectSkillController {
 
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
-  @Delete('/userProjectSkill/:id')
+  @Delete('/:id')
   async deleteUserProjectSkill(@Param('id') id: number) {
     return await this.userProjectSkillService.deleteUserProjectSkill({ id });
   }

@@ -29,7 +29,7 @@ export class ProjectResponseDto {
   @IsString()
   description?: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: ProjectSkillResponseDto, isArray: true })
   @Expose()
   @Type(() => ProjectSkillResponseDto)
   @IsArray()

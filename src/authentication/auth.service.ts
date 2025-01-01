@@ -9,6 +9,8 @@ import { RegisterDto } from './dto/register.dto';
 import { ConfigService } from '@nestjs/config';
 import { IAccessTokenPayload } from './interfaces/accessToken-payload.interface';
 import { HashService } from '../common/services/hash.service';
+import { AuthResponseDto } from './dto/auth.response.dto';
+import { IUser } from '../models/user/interfaces/user.interface';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +21,7 @@ export class AuthService {
     private readonly hashService: HashService,
   ) {}
 
-  async validateUser(username: string, password: string): Promise<any> {
+  async validateUser(username: string, password: string): Promise<IUser> {
     const user = await this.userService.findOne({ username });
 
     if (!user) {
@@ -66,7 +68,7 @@ export class AuthService {
     );
   }
 
-  async getTokens(userId: number, username: string) {
+  async getTokens(userId: number, username: string): Promise<AuthResponseDto> {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
@@ -96,7 +98,10 @@ export class AuthService {
     };
   }
 
-  async refreshTokens(userId: number, refreshToken: string) {
+  async refreshTokens(
+    userId: number,
+    refreshToken: string,
+  ): Promise<AuthResponseDto> {
     const user = await this.userService.findOne({ id: userId });
 
     if (!user || !user.refreshToken) {

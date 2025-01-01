@@ -18,21 +18,21 @@ export class UserSkillController {
 
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
-  @Post('/userSkill/:skillId')
+  @Post('/:skillId')
   async addUserSkill(@Req() req: any, @Param('skillId') skillId: number) {
     return await this.userSkillService.addUserSkill(req.user.id, skillId);
   }
 
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
-  @Delete('/userSkill/:id')
+  @Delete('/:id')
   async deleteUserSkill(@Req() req: any, @Param('id') id: number) {
     return await this.userSkillService.deleteUserSkill({ id });
   }
 
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
-  @Put('/userSkill/:id')
+  @Put('/:id')
   async editUserSkill(@Req() req: any, @Param('id') id: number) {
     return await this.userSkillService.editUserSkill({ id }, req.body);
   }

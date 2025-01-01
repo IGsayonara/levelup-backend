@@ -27,6 +27,6 @@ module.exports = {
         'endOfLine': 'auto',
       },
     ],
-    '@typescript-eslint/no-unused-vars': ['error', { 'varsIgnorePattern': '^_' }],
+    '@typescript-eslint/no-unused-vars': ['error', { 'varsIgnorePattern': '^_', argsIgnorePattern: '^_' }],
   },
 };

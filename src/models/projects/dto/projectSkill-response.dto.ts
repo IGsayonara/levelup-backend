@@ -7,7 +7,7 @@ export class ProjectSkillResponseDto {
   @Expose()
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: SkillResponseDto })
   @Type(() => SkillResponseDto)
   @Expose()
   skill: SkillResponseDto;
