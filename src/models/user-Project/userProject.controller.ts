@@ -1,6 +1,8 @@
 import {
+  Body,
   Controller,
   Delete,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -9,12 +11,24 @@ import {
 } from '@nestjs/common';
 import { UserProjectService } from './userProject.service';
 import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiNotFoundResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import * as fs from 'node:fs';
 import { ProjectResponseDto } from '../projects/dto/project-response.dto';
 import { CreateProjectDto } from '../projects/dto/create-project.dto';
 import { ProjectService } from '../projects/project.service';
+import { UpdateUserProjectDto } from './dto/update-userProject.dto';
+import {
+  CreatedResponse,
+  EmptyResponse,
+} from '../../common/utils/response/empty-response.util';
+import { EmptyResponseDto } from '../../common/dto/response/empty-response.dto';
+import { RequestWithUser } from '../../common/interfaces/withUser-interface';
 
 const uploadDirectory = './uploads';
 
@@ -32,29 +46,38 @@ export class UserProjectController {
   ) {}
 
   @ApiBearerAuth()
-  @ApiResponse({ type: ProjectResponseDto })
+  @ApiResponse({ type: EmptyResponseDto, status: HttpStatus.CREATED })
+  @ApiNotFoundResponse()
   @UseGuards(AccessTokenGuard)
   @Post('/')
-  async addOne(@Req() req) {
+  async addOne(
+    @Req() req: RequestWithUser,
+    @Body() body: CreateProjectDto,
+  ): Promise<EmptyResponseDto> {
     const userId = req.user.id;
-    const project = await this.projectService.addOne(
-      req.body as CreateProjectDto,
-    );
+    const project = await this.projectService.addOne(body);
 
     await this.userProjectService.addProjectToUser(userId, project.id);
+
+    return CreatedResponse;
   }
 
   @ApiBearerAuth()
+  @ApiResponse({ type: UpdateUserProjectDto, status: HttpStatus.OK })
   @UseGuards(AccessTokenGuard)
   @Put('/:id')
-  async updateUserProject(@Req() req: any, @Param('id') id: number) {
-    return await this.userProjectService.updateUserProject({ id }, req.body);
+  async updateOne(@Body() body: UpdateUserProjectDto, @Param('id') id: number) {
+    return await this.userProjectService.updateOne({ id }, body);
   }
 
   @ApiBearerAuth()
+  @ApiResponse({ type: EmptyResponseDto })
+  @ApiNotFoundResponse()
   @UseGuards(AccessTokenGuard)
   @Delete('/:id')
-  async deleteUserProject(@Req() req: any, @Param('id') id: number) {
-    return await this.userProjectService.deleteUserProject({ id });
+  async deleteUserProject(@Param('id') id: number): Promise<EmptyResponseDto> {
+    await this.userProjectService.deleteOne({ id });
+
+    return EmptyResponse;
   }
 }

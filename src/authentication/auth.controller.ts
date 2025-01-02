@@ -15,7 +15,7 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from './dto/auth.response.dto';
 import { EmptyResponse } from '../common/utils/response/empty-response.util';
-import { EmptyResponseDto } from '../common/dto/empty-response.dto';
+import { EmptyResponseDto } from '../common/dto/response/empty-response.dto';
 
 @ApiTags('Authentication')
 @Controller('/auth')
