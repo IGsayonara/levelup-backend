@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   NotFoundException,
@@ -10,7 +11,16 @@ import {
 } from '@nestjs/common';
 import { UserProjectSkillService } from './userProject-skill.service';
 import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { UpdateUserProjectSkillDto } from './dto/update-userProjectSkill.dto';
+import { EmptyResponse } from '../../common/utils/response/empty-response.util';
+import { EmptyResponseDto } from '../../common/dto/response/empty-response.dto';
+import { CreateUserProjectSkilDto } from './dto/create-userProjectSkil.dto';
 
 @ApiTags('UserProject - Skill')
 @Controller('/userProjectSkill')
@@ -20,8 +30,8 @@ export class UserProjectSkillController {
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Post('/')
-  async addUserProjectSkill(@Req() req: any) {
-    const { userProjectId, skillId } = req.body;
+  async addUserProjectSkill(@Body() body: CreateUserProjectSkilDto) {
+    const { userProjectId, skillId } = body;
 
     if (!userProjectId || !skillId) {
       throw new NotFoundException('Missing userProjectId or skillId');
@@ -36,17 +46,24 @@ export class UserProjectSkillController {
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Put('/:id')
-  async updateUserProjectSkill(@Req() req: any, @Param('id') id: number) {
+  async updateUserProjectSkill(
+    @Body() body: UpdateUserProjectSkillDto,
+    @Param('id') id: number,
+  ) {
     return await this.userProjectSkillService.updateUserProjectSkill(
       { id },
-      req.body,
+      body,
     );
   }
 
   @ApiBearerAuth()
+  @ApiNoContentResponse({ type: EmptyResponseDto })
+  @ApiNotFoundResponse()
   @UseGuards(AccessTokenGuard)
   @Delete('/:id')
   async deleteUserProjectSkill(@Param('id') id: number) {
-    return await this.userProjectSkillService.deleteUserProjectSkill({ id });
+    await this.userProjectSkillService.deleteUserProjectSkill({ id });
+
+    return EmptyResponse;
   }
 }

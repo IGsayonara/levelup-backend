@@ -2,7 +2,7 @@ import { FindOptionsWhere } from 'typeorm';
 import { UserSkillEntity } from './entities/user-skill.entity';
 
 export class UserSkillService {
-  async addUserSkill(userId: number, skillId: number) {
+  async addOne(userId: number, skillId: number) {
     const userSkill = await UserSkillEntity.createQueryBuilder()
       .insert()
       .values({
@@ -15,7 +15,7 @@ export class UserSkillService {
     return userSkill.generatedMaps[0] as UserSkillEntity;
   }
 
-  async deleteUserSkill(
+  async deleteOne(
     findOptionsWhere: FindOptionsWhere<UserSkillEntity>,
   ): Promise<void> {
     await UserSkillEntity.createQueryBuilder()
@@ -24,7 +24,7 @@ export class UserSkillService {
       .execute();
   }
 
-  async editUserSkill(
+  async updateOne(
     findOptionsWhere: FindOptionsWhere<UserSkillEntity>,
     updateUserSkillDto: Partial<UserSkillEntity>,
   ): Promise<void> {
