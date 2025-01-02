@@ -1,6 +1,8 @@
 import {
+  Body,
   Controller,
   Delete,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -9,7 +11,18 @@ import {
 } from '@nestjs/common';
 import { UserSkillService } from './user-skill.service';
 import { AccessTokenGuard } from '../../authentication/guards/access-token-guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { RequestWithUser } from '../../common/interfaces/withUser-interface';
+import { UpdateUserSkillDto } from './dto/update-userSkill.dto';
+import { UserSkillResponseDto } from './dto/user-skill.response.dto';
+import { EmptyResponseDto } from '../../common/dto/response/empty-response.dto';
+import { EmptyResponse } from '../../common/utils/response/empty-response.util';
 
 @ApiTags('User - Skill')
 @Controller('/userSkill')
@@ -17,23 +30,35 @@ export class UserSkillController {
   constructor(private userSkillService: UserSkillService) {}
 
   @ApiBearerAuth()
+  @ApiResponse({ type: UserSkillResponseDto, status: HttpStatus.CREATED })
+  @ApiNotFoundResponse()
   @UseGuards(AccessTokenGuard)
   @Post('/:skillId')
-  async addUserSkill(@Req() req: any, @Param('skillId') skillId: number) {
-    return await this.userSkillService.addUserSkill(req.user.id, skillId);
+  async addUserSkill(
+    @Req() req: RequestWithUser,
+    @Param('skillId') skillId: number,
+  ) {
+    return await this.userSkillService.addOne(req.user.id, skillId);
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AccessTokenGuard)
-  @Delete('/:id')
-  async deleteUserSkill(@Req() req: any, @Param('id') id: number) {
-    return await this.userSkillService.deleteUserSkill({ id });
-  }
-
+  @ApiResponse({ type: UserSkillResponseDto, status: HttpStatus.OK })
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Put('/:id')
-  async editUserSkill(@Req() req: any, @Param('id') id: number) {
-    return await this.userSkillService.editUserSkill({ id }, req.body);
+  async editUserSkill(
+    @Body() body: UpdateUserSkillDto,
+    @Param('id') id: number,
+  ) {
+    return await this.userSkillService.updateOne({ id }, body);
+  }
+
+  @ApiBearerAuth()
+  @ApiNoContentResponse({ type: EmptyResponseDto })
+  @UseGuards(AccessTokenGuard)
+  @Delete('/:id')
+  async deleteUserSkill(@Req() req: any, @Param('id') id: number) {
+    await this.userSkillService.deleteOne({ id });
+
+    return EmptyResponse;
   }
 }
