@@ -9,21 +9,19 @@ import {
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { AccessTokenGuard } from '../../../authentication/guards/access-token-guard';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserResponseDTO } from '../dto/user-response.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import * as fs from 'node:fs';
-import { join } from 'path';
+
 import { UserProfileService } from '../services/user-profile.service';
 import { UpdateUserProfileDto } from '../dto/update-userProfile.dto';
-
-const uploadDirectory = './uploads';
-
-// Ensure the uploads directory exists
-if (!fs.existsSync(uploadDirectory)) {
-  fs.mkdirSync(uploadDirectory);
-}
+import { multerOptions } from '../../../common/configs/mutler.config';
 
 @ApiTags('UserProfile')
 @Controller('/userProfile')
@@ -52,37 +50,33 @@ export class UserProfileController {
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Put('/profileImage')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: (_req, _file, callback) => {
-          callback(null, uploadDirectory);
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
         },
-        filename: (req, file, callback) => {
-          // Define the filename format
-          const filename = `${Date.now()}-${file.originalname}`;
-          callback(null, filename);
-        },
-      }),
-    }),
-  )
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor('file', multerOptions()))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req) {
-    const path = join(uploadDirectory, file.filename);
-
     await this.userProfileService.updateOne(
       {
         username: req.user.username,
       },
       {
-        profileImage: path,
+        profileImage: file.path,
       },
     );
 
-    // Return a response with the file details
     return {
       message: 'Profile image uploaded successfully',
       filename: file.filename,
-      path, // Full path to the uploaded file
+      path: file.path, // Full path to the uploaded file
     };
   }
 }
