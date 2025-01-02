@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 
 export class ProjectSkillResponseDto {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @Expose()
   id: number;
 
@@ -12,7 +12,7 @@ export class ProjectSkillResponseDto {
   @Expose()
   skill: SkillResponseDto;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'description' })
   @Expose()
   description: string;
 }

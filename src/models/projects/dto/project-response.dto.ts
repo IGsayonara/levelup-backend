@@ -11,19 +11,19 @@ import { ProjectSkillResponseDto } from './projectSkill-response.dto';
 import { Expose, Type } from 'class-transformer';
 
 export class ProjectResponseDto {
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @Expose()
   @IsNotEmpty()
   @IsNumber()
   id: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Project title' })
   @Expose()
   @IsNotEmpty()
   @IsString()
   title: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Project description' })
   @Expose()
   @IsOptional()
   @IsString()
