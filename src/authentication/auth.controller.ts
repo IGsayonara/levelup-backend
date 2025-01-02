@@ -16,6 +16,7 @@ import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from './dto/auth.response.dto';
 import { EmptyResponse } from '../common/utils/response/empty-response.util';
 import { EmptyResponseDto } from '../common/dto/response/empty-response.dto';
+import { RequestWithUser } from '../common/interfaces/withUser-interface';
 
 @ApiTags('Authentication')
 @Controller('/auth')
@@ -25,7 +26,7 @@ export class AuthController {
   @ApiResponse({ type: AuthResponseDto, status: HttpStatus.OK })
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(@Request() req, @Body() _body: LoginDto) {
+  async login(@Request() req: RequestWithUser, @Body() _body: LoginDto) {
     return await this.authService.login(req.user);
   }
 
@@ -42,7 +43,7 @@ export class AuthController {
   @ApiResponse({ type: AuthResponseDto, status: HttpStatus.OK })
   @UseGuards(RefreshTokenGuard)
   @Post('/refresh')
-  refreshTokens(@Request() req): Promise<AuthResponseDto> {
+  refreshTokens(@Request() req: RequestWithUser): Promise<AuthResponseDto> {
     const userId = req.user.id;
     const refreshToken = req.user['refreshToken'];
     return this.authService.refreshTokens(userId, refreshToken);
