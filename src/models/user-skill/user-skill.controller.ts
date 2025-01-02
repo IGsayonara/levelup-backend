@@ -56,7 +56,7 @@ export class UserSkillController {
   @ApiNoContentResponse({ type: EmptyResponseDto })
   @UseGuards(AccessTokenGuard)
   @Delete('/:id')
-  async deleteUserSkill(@Req() req: any, @Param('id') id: number) {
+  async deleteUserSkill(@Param('id') id: number) {
     await this.userSkillService.deleteOne({ id });
 
     return EmptyResponse;
