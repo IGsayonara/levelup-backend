@@ -31,6 +31,6 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
-  await app.listen(process.env.APP_PORT);
+  await app.listen(3000);
 }
 bootstrap();

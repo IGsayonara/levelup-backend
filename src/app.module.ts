@@ -12,6 +12,7 @@ import { join } from 'path';
 import { UserProjectModule } from './models/user-Project/userProject.module';
 import { UserProjectSkillModule } from './models/userProject-skill/userProject-skill.module';
 import { UserSkillModule } from './models/user-skill/user-skill.module';
+import { CommonServicesModule } from './common/services/commonServicesModule';
 
 @Module({
   imports: [
@@ -23,11 +24,12 @@ import { UserSkillModule } from './models/user-skill/user-skill.module';
     UserSkillModule,
     UserProjectSkillModule,
     PostgrtesDatabaseProviderModule,
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
+    CommonServicesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
