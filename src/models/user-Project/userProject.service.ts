@@ -16,7 +16,7 @@ export class UserProjectService {
       .execute();
   }
 
-  async updateUserProject(
+  async updateOne(
     findOptionsWhere: FindOptionsWhere<UserProjectEntity>,
     updateUserProjectDto: Partial<UserProjectEntity>,
   ): Promise<IUserProject> {
@@ -29,7 +29,7 @@ export class UserProjectService {
     return await UserProjectEntity.findOne({ where: findOptionsWhere });
   }
 
-  async deleteUserProject(
+  async deleteOne(
     findOptionsWhere: FindOptionsWhere<UserProjectEntity>,
   ): Promise<void> {
     await UserProjectEntity.createQueryBuilder()
