@@ -1,12 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 
-export class UpdateUserSkillDto {
+export class UserSkillUpdateDto {
   @ApiProperty({ example: 'Description' })
   @Expose()
-  description: string;
+  @IsOptional()
+  description?: string;
 
   @ApiProperty()
   @Expose()
-  learnedAt: Date;
+  @IsOptional()
+  learnedAt?: Date;
 }

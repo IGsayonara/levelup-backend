@@ -1,4 +1,4 @@
-import { ProjectResponseDto } from '../dto/project-response.dto';
+import { ProjectResponseDto } from '../dto/project.response.dto';
 import { IProject } from '../interfaces/project.inerface';
 import { NotImplementedException } from '@nestjs/common';
 

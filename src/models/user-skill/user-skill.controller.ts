@@ -19,7 +19,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { RequestWithUser } from '../../common/interfaces/withUser-interface';
-import { UpdateUserSkillDto } from './dto/update-userSkill.dto';
+import { UserSkillUpdateDto } from './dto/user-skill.update.dto';
 import { UserSkillResponseDto } from './dto/user-skill.response.dto';
 import { EmptyResponseDto } from '../../common/dto/response/empty-response.dto';
 import { EmptyResponse } from '../../common/utils/response/empty-response.util';
@@ -42,7 +42,7 @@ export class UserSkillController {
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Put('/:id')
-  async updateOne(@Body() body: UpdateUserSkillDto, @Param('id') id: number) {
+  async updateOne(@Body() body: UserSkillUpdateDto, @Param('id') id: number) {
     return await this.userSkillService.updateOne({ id }, body);
   }
 

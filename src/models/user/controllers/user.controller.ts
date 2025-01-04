@@ -10,7 +10,7 @@ import {
 import { UserService } from '../services/user.service';
 import { AccessTokenGuard } from '../../../authentication/guards/access-token-guard';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserResponseDTO } from '../dto/user-response.dto';
+import { UserResponseDto } from '../dto/user.response.dto';
 import { ResponseType } from '../../../common/decorators/metadata/responseType.decorator';
 import { RequestWithUser } from '../../../common/interfaces/withUser-interface';
 
@@ -20,11 +20,11 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @ApiBearerAuth()
-  @ApiResponse({ type: UserResponseDTO, status: HttpStatus.OK })
-  @ResponseType(UserResponseDTO)
+  @ApiResponse({ type: UserResponseDto, status: HttpStatus.OK })
+  @ResponseType(UserResponseDto)
   @UseGuards(AccessTokenGuard)
   @Get('/me')
-  async findCurrent(@Req() req: RequestWithUser): Promise<UserResponseDTO> {
+  async findCurrent(@Req() req: RequestWithUser): Promise<UserResponseDto> {
     const user = await this.userService.findOne({
       username: req.user.username,
     });
@@ -36,13 +36,13 @@ export class UserController {
     return user;
   }
 
-  @ApiResponse({ type: UserResponseDTO })
-  @ResponseType(UserResponseDTO)
+  @ApiResponse({ type: UserResponseDto })
+  @ResponseType(UserResponseDto)
   @Get('/:username')
   async findOne(
     @Param('username')
     username: string,
-  ): Promise<UserResponseDTO> {
+  ): Promise<UserResponseDto> {
     const user = await this.userService.findOne({ username });
 
     if (!user) {

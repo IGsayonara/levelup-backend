@@ -7,7 +7,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ProjectSkillResponseDto } from './projectSkill-response.dto';
+import { ProjectSkillResponseDto } from './project-skill.response.dto';
 import { Expose, Type } from 'class-transformer';
 
 export class ProjectResponseDto {

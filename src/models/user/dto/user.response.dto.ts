@@ -3,10 +3,10 @@ import { IsNumber, IsString, IsOptional, IsDate } from 'class-validator';
 import { Expose, Transform, Type } from 'class-transformer';
 
 import { UserSkillResponseDto } from '../../user-skill/dto/user-skill.response.dto';
-import { UserProjectResponseDto } from '../../user-Project/dto/userProject-response.dto';
+import { UserProjectResponseDto } from '../../user-Project/dto/user-project.response.dto';
 import * as process from 'node:process';
 
-export class UserResponseDTO {
+export class UserResponseDto {
   @ApiProperty({ example: 1 })
   @Expose()
   @IsNumber()

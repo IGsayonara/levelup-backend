@@ -19,10 +19,10 @@ import {
 } from '@nestjs/swagger';
 
 import * as fs from 'node:fs';
-import { ProjectResponseDto } from '../projects/dto/project-response.dto';
-import { CreateProjectDto } from '../projects/dto/create-project.dto';
+import { ProjectResponseDto } from '../projects/dto/project.response.dto';
+import { ProjectCreateDto } from '../projects/dto/project.create.dto';
 import { ProjectService } from '../projects/project.service';
-import { UpdateUserProjectDto } from './dto/update-userProject.dto';
+import { UserProjectUpdateDto } from './dto/user-project.update.dto';
 import {
   CreatedResponse,
   EmptyResponse,
@@ -52,7 +52,7 @@ export class UserProjectController {
   @Post('/')
   async addOne(
     @Req() req: RequestWithUser,
-    @Body() body: CreateProjectDto,
+    @Body() body: ProjectCreateDto,
   ): Promise<EmptyResponseDto> {
     const userId = req.user.id;
     const project = await this.projectService.addOne(body);
@@ -63,10 +63,10 @@ export class UserProjectController {
   }
 
   @ApiBearerAuth()
-  @ApiResponse({ type: UpdateUserProjectDto, status: HttpStatus.OK })
+  @ApiResponse({ type: UserProjectUpdateDto, status: HttpStatus.OK })
   @UseGuards(AccessTokenGuard)
   @Put('/:id')
-  async updateOne(@Body() body: UpdateUserProjectDto, @Param('id') id: number) {
+  async updateOne(@Body() body: UserProjectUpdateDto, @Param('id') id: number) {
     return await this.userProjectService.updateOne({ id }, body);
   }
 

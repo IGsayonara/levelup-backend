@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ISkill } from './interfaces/skill.inerface';
 import { SkillEntity } from './entities/skill.entity';
-import { CreateSkillDto } from './dto/create-skill.dto';
+import { SkillCreateDto } from './dto/skill.create.dto';
 import { FindOptionsWhere } from 'typeorm';
 
 @Injectable()

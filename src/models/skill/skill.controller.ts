@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { SkillService } from './skill.service';
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SkillResponseDto } from './dto/skill-response.dto';
+import { SkillResponseDto } from './dto/skill.response.dto';
 import { isArray } from 'class-validator';
 
 @ApiTags('Skills')
