@@ -22,6 +22,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UserProfileService } from '../services/user-profile.service';
 import { UpdateUserProfileDto } from '../dto/update-userProfile.dto';
 import { multerOptions } from '../../../common/configs/mutler.config';
+import { RequestWithUser } from '../../../common/interfaces/withUser-interface';
 
 @ApiTags('UserProfile')
 @Controller('/userProfile')
@@ -36,8 +37,8 @@ export class UserProfileController {
   @UseGuards(AccessTokenGuard)
   @Put('/general')
   async updateOne(
-    @Req() req,
     @Body() body: UpdateUserProfileDto,
+    @Req() req: RequestWithUser,
   ): Promise<UserResponseDTO> {
     await this.userProfileService.updateOne(
       { username: req.user.username },

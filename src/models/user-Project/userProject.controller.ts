@@ -75,7 +75,7 @@ export class UserProjectController {
   @ApiNotFoundResponse()
   @UseGuards(AccessTokenGuard)
   @Delete('/:id')
-  async deleteUserProject(@Param('id') id: number): Promise<EmptyResponseDto> {
+  async deleteOne(@Param('id') id: number): Promise<EmptyResponseDto> {
     await this.userProjectService.deleteOne({ id });
 
     return EmptyResponse;

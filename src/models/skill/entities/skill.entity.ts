@@ -2,13 +2,10 @@ import {
   BaseEntity,
   Column,
   Entity,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ProjectEntity } from '../../projects/entities/project.entity';
-import { UserEntity } from '../../user/entities/user.entity';
-import { ISkill } from '../interfaces/skill.inerface';
+
 import { UserSkillEntity } from '../../user-skill/entities/user-skill.entity';
 import { ProjectSkillEntity } from '../../projects/entities/project-skill.entity';
 import { UserProjectSkillEntity } from '../../userProject-skill/entities/user-project-skill.entity';
