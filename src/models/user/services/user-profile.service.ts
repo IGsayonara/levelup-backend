@@ -18,8 +18,6 @@ export class UserProfileService {
       throw new NotFoundException();
     }
 
-    console.log(updateUserProfileDto);
-
     await UserProfileEntity.createQueryBuilder('userProfile')
       .update()
       .set(updateUserProfileDto)

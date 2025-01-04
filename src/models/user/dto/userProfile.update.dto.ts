@@ -3,43 +3,43 @@ import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class UserProfileUpdateDto {
-  @ApiProperty()
+  @ApiProperty({ required: false, example: 'Ihor' })
   @Expose()
   @IsNotEmpty()
   @IsOptional()
   firstName?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false, example: 'Didunik' })
   @Expose()
   @IsNotEmpty()
   @IsOptional()
   lastName?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false, example: 'test.mail.com' })
   @Expose()
   @IsNotEmpty()
   @IsOptional()
   email?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false, example: 'html bio' })
   @Expose()
   @IsNotEmpty()
   @IsOptional()
   bio?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @Expose()
   @IsNotEmpty()
   @IsOptional()
   phoneNumber?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @Expose()
   @IsNotEmpty()
   @IsOptional()
   address?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @Expose()
   @IsNotEmpty()
   @IsOptional({})

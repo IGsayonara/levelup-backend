@@ -11,7 +11,7 @@ export const multerOptions = () => ({
     destination: (_req, _file, callback) => {
       callback(null, multerConfig().dest);
     },
-    filename: (req, file, callback) => {
+    filename: (_req, file, callback) => {
       // Define the filename format
       const filename = `${Date.now()}-${file.originalname}`;
       callback(null, filename);

@@ -13,6 +13,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectCreateDto } from './dto/project.create.dto';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserProfileEntity } from '../user/entities/user-profile.entity';
+import { ProjectUpdateDto } from './dto/project.update.dto';
 
 @Injectable()
 export class ProjectService {
@@ -52,7 +53,7 @@ export class ProjectService {
   }
 
   async updateOne(
-    updateProjectDto: Partial<ProjectCreateDto>,
+    updateProjectDto: ProjectUpdateDto,
     findOptionsWhere: FindOptionsWhere<ProjectEntity>,
   ): Promise<IProject | null> {
     const project = await ProjectEntity.createQueryBuilder('project')
