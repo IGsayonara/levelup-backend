@@ -21,11 +21,6 @@ export class UpdateUserProfileDto {
   @ApiProperty()
   @Expose()
   @IsNotEmpty()
-  profileImage: string | null;
-
-  @ApiProperty()
-  @Expose()
-  @IsNotEmpty()
   bio: string | null;
 
   @ApiProperty()
