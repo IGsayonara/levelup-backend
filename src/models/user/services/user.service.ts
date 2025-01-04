@@ -1,6 +1,6 @@
 import { UserEntity } from '../entities/user.entity';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserCreateDto } from '../dto/user.create.dto';
+import { UserUpdateDto } from '../dto/user.update.dto';
 import { IUser } from '../interfaces/user.interface';
 
 import { FindOptionsWhere } from 'typeorm';
@@ -28,14 +28,14 @@ export class UserService {
 
   async updateOne(
     findOptionsWhere: FindOptionsWhere<UserEntity>,
-    updateUserDto: UpdateUserDto,
+    updateUserDto: UserUpdateDto,
   ): Promise<IUser> {
     return await UserEntity.update(findOptionsWhere, updateUserDto).then(
       (updateResult) => updateResult.raw[0],
     );
   }
 
-  async addOne(createUserDto: CreateUserDto): Promise<Omit<IUser, 'password'>> {
+  async addOne(createUserDto: UserCreateDto): Promise<Omit<IUser, 'password'>> {
     const user = new UserEntity();
 
     user.username = createUserDto.username;

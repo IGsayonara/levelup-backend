@@ -1,4 +1,4 @@
-import { SkillResponseDto } from '../../skill/dto/skill-response.dto';
+import { SkillResponseDto } from '../../skill/dto/skill.response.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 

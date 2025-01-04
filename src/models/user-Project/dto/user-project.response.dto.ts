@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { ProjectResponseDto } from '../../projects/dto/project-response.dto';
-import { UserProjectSkillResponseDto } from '../../userProject-skill/dto/userProjectSkill-response.dto';
+import { ProjectResponseDto } from '../../projects/dto/project.response.dto';
+import { UserProjectSkillResponseDto } from '../../userProject-skill/dto/userProject-skill.response.dto';
 
 export class UserProjectResponseDto {
   @ApiProperty({ example: 1 })

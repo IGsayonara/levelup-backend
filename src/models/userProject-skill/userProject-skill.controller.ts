@@ -16,10 +16,10 @@ import {
   ApiNotFoundResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { UpdateUserProjectSkillDto } from './dto/update-userProjectSkill.dto';
+import { UserProjectSkillUpdateDto } from './dto/userProject-skill.update.dto';
 import { EmptyResponse } from '../../common/utils/response/empty-response.util';
 import { EmptyResponseDto } from '../../common/dto/response/empty-response.dto';
-import { CreateUserProjectSkilDto } from './dto/create-userProjectSkil.dto';
+import { UserProjectSkillCreateDto } from './dto/userProject-skill.create.dto';
 
 @ApiTags('UserProject - Skill')
 @Controller('/userProjectSkill')
@@ -29,7 +29,7 @@ export class UserProjectSkillController {
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Post('/')
-  async addOne(@Body() body: CreateUserProjectSkilDto) {
+  async addOne(@Body() body: UserProjectSkillCreateDto) {
     const { userProjectId, skillId } = body;
 
     if (!userProjectId || !skillId) {
@@ -46,7 +46,7 @@ export class UserProjectSkillController {
   @UseGuards(AccessTokenGuard)
   @Put('/:id')
   async updateOne(
-    @Body() body: UpdateUserProjectSkillDto,
+    @Body() body: UserProjectSkillUpdateDto,
     @Param('id') id: number,
   ) {
     return await this.userProjectSkillService.updateUserProjectSkill(

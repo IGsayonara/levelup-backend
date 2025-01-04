@@ -10,7 +10,7 @@ import {
   PaginateQuery,
 } from 'nestjs-paginate';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateProjectDto } from './dto/create-project.dto';
+import { ProjectCreateDto } from './dto/project.create.dto';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserProfileEntity } from '../user/entities/user-profile.entity';
 
@@ -43,7 +43,7 @@ export class ProjectService {
       .getOne();
   }
 
-  async addOne(createProjectDto: CreateProjectDto): Promise<IProject | null> {
+  async addOne(createProjectDto: ProjectCreateDto): Promise<IProject | null> {
     console.log(createProjectDto);
     const project = new ProjectEntity();
     Object.assign(project, createProjectDto);
@@ -52,7 +52,7 @@ export class ProjectService {
   }
 
   async updateOne(
-    updateProjectDto: Partial<CreateProjectDto>,
+    updateProjectDto: Partial<ProjectCreateDto>,
     findOptionsWhere: FindOptionsWhere<ProjectEntity>,
   ): Promise<IProject | null> {
     const project = await ProjectEntity.createQueryBuilder('project')

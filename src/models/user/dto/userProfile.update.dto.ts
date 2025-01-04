@@ -1,40 +1,47 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
-export class UpdateUserProfileDto {
+export class UserProfileUpdateDto {
   @ApiProperty()
   @Expose()
   @IsNotEmpty()
-  firstName: string;
-
-  @ApiProperty()
-  @Expose()
-  @IsNotEmpty()
-  lastName: string;
+  @IsOptional()
+  firstName?: string;
 
   @ApiProperty()
   @Expose()
   @IsNotEmpty()
-  email: string;
+  @IsOptional()
+  lastName?: string;
 
   @ApiProperty()
   @Expose()
   @IsNotEmpty()
-  bio: string | null;
+  @IsOptional()
+  email?: string;
 
   @ApiProperty()
   @Expose()
   @IsNotEmpty()
-  phoneNumber: string | null;
+  @IsOptional()
+  bio?: string;
 
   @ApiProperty()
   @Expose()
   @IsNotEmpty()
-  address: string | null;
+  @IsOptional()
+  phoneNumber?: string;
 
   @ApiProperty()
   @Expose()
   @IsNotEmpty()
-  dateOfBirth: Date | null;
+  @IsOptional()
+  address?: string;
+
+  @ApiProperty()
+  @Expose()
+  @IsNotEmpty()
+  @IsOptional({})
+  dateOfBirth?: Date;
 }

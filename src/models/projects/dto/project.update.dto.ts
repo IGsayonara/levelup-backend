@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class CreateProjectDto {
+export class ProjectUpdateDto {
   @ApiProperty({ example: 'Crypto Wallet' })
-  @IsNotEmpty()
   @IsString()
-  readonly title: string;
+  @IsOptional()
+  readonly title?: string;
 
   @ApiPropertyOptional({ example: 'Amazing de-fi application bla bla bla' })
   @IsOptional()

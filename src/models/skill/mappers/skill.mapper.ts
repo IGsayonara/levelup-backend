@@ -1,5 +1,5 @@
 import { ISkill } from '../interfaces/skill.inerface';
-import { SkillResponseDto } from '../dto/skill-response.dto';
+import { SkillResponseDto } from '../dto/skill.response.dto';
 
 export class SkillMapper {
   static toDto(skill: ISkill): SkillResponseDto {
