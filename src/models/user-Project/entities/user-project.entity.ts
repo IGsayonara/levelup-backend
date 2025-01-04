@@ -33,4 +33,7 @@ export class UserProjectEntity extends BaseEntity {
 
   @Column()
   description: string;
+
+  @Column({ nullable: true })
+  shortDescription?: string;
 }
