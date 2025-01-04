@@ -20,7 +20,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  // fs.writeFileSync('./swagger-spec.json', JSON.stringify(document));
+  fs.writeFileSync('./swagger-spec.json', JSON.stringify(document));
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(

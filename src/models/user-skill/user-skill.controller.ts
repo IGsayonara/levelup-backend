@@ -34,10 +34,7 @@ export class UserSkillController {
   @ApiNotFoundResponse()
   @UseGuards(AccessTokenGuard)
   @Post('/:skillId')
-  async addUserSkill(
-    @Req() req: RequestWithUser,
-    @Param('skillId') skillId: number,
-  ) {
+  async addOne(@Req() req: RequestWithUser, @Param('skillId') skillId: number) {
     return await this.userSkillService.addOne(req.user.id, skillId);
   }
 
@@ -45,10 +42,7 @@ export class UserSkillController {
   @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Put('/:id')
-  async editUserSkill(
-    @Body() body: UpdateUserSkillDto,
-    @Param('id') id: number,
-  ) {
+  async updateOne(@Body() body: UpdateUserSkillDto, @Param('id') id: number) {
     return await this.userSkillService.updateOne({ id }, body);
   }
 
