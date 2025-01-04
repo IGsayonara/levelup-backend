@@ -1,10 +1,10 @@
 import {
+  Body,
   Controller,
   HttpStatus,
   Param,
   ParseIntPipe,
   Put,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ProjectService } from './project.service';
@@ -24,14 +24,14 @@ export class ProjectController {
   @UseGuards(AccessTokenGuard)
   @Put('/:id')
   async updateOne(
-    @Req() req,
+    @Body() body: CreateProjectDto,
     @Param(
       'id',
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
   ) {
-    return await this.projectService.updateOne(req.body as CreateProjectDto, {
+    return await this.projectService.updateOne(body as CreateProjectDto, {
       id,
     });
   }
