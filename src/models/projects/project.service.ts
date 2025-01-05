@@ -53,7 +53,7 @@ export class ProjectService {
   }
 
   async updateOne(
-    updateProjectDto: ProjectUpdateDto,
+    updateProjectDto: Partial<ProjectEntity>,
     findOptionsWhere: FindOptionsWhere<ProjectEntity>,
   ): Promise<IProject | null> {
     const project = await ProjectEntity.createQueryBuilder('project')

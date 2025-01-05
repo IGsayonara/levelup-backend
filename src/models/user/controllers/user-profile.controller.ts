@@ -68,7 +68,6 @@ export class UserProfileController {
     @UploadedFile() file: Express.Multer.File,
     @Req() req: RequestWithUser,
   ) {
-    console.log(file);
     await this.userProfileService.updateOne(
       {
         username: req.user.username,

@@ -56,4 +56,11 @@ export class ProjectEntity extends BaseEntity {
 
   @OneToMany(() => UserProjectEntity, (userProject) => userProject.project)
   userProjects: UserProjectEntity[];
+
+  @Column({
+    type: 'text',
+    default: '',
+    nullable: true,
+  })
+  public image: string;
 }
