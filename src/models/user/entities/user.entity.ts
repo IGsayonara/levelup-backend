@@ -1,18 +1,19 @@
 import {
   Column,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
-  JoinColumn,
   BaseEntity,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  OneToOne,
 } from 'typeorm';
-import { ProjectEntity } from '../../projects/entities/project.entity';
-import { SkillEntity } from '../../skill/entities/skill.entity';
-import { IsOptional } from 'class-validator';
 
-@Entity()
+import { UserSkillEntity } from '../../user-skill/entities/user-skill.entity';
+import { UserProfileEntity } from './user-profile.entity';
+import { UserProjectEntity } from '../../user-Project/entities/user-project.entity';
+
+@Entity('user')
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'bigint',
@@ -29,26 +30,28 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'text' })
   password: string;
 
-  @OneToMany(() => SkillEntity, (skill) => skill.user, { cascade: true })
-  @JoinColumn()
-  @IsOptional()
-  skills: SkillEntity[];
-
-  @OneToMany(() => ProjectEntity, (project) => project.user, { cascade: true })
-  @JoinColumn()
-  @IsOptional()
-  projects: ProjectEntity[];
-
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
   })
-  public created_at: Date;
+  public createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP(6)',
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
-  public updated_at: Date;
+  public updatedAt: Date;
+
+  @Column({ nullable: true })
+  public refreshToken: string | null;
+
+  @OneToMany(() => UserSkillEntity, (userSkill) => userSkill.user)
+  userSkills: UserSkillEntity[];
+
+  @OneToMany(() => UserProjectEntity, (userProject) => userProject.user)
+  userProjects: UserProjectEntity[];
+
+  @OneToOne(() => UserProfileEntity, (userProfile) => userProfile.user)
+  userProfile: UserProfileEntity;
 }

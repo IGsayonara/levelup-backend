@@ -2,16 +2,15 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ProjectEntity } from '../../projects/entities/project.entity';
-import { UserEntity } from '../../user/entities/user.entity';
 
-@Entity()
+import { UserSkillEntity } from '../../user-skill/entities/user-skill.entity';
+import { ProjectSkillEntity } from '../../projects/entities/project-skill.entity';
+import { UserProjectSkillEntity } from '../../userProject-skill/entities/user-project-skill.entity';
+
+@Entity('skill')
 export class SkillEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'bigint',
@@ -26,9 +25,15 @@ export class SkillEntity extends BaseEntity {
   })
   title: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.skills)
-  user: UserEntity;
+  @OneToMany(() => UserSkillEntity, (userSkill) => userSkill.skill)
+  userSkills: UserSkillEntity[];
 
-  @ManyToMany(() => ProjectEntity, (project) => project.skills)
-  projects: ProjectEntity[];
+  @OneToMany(() => ProjectSkillEntity, (projectSkill) => projectSkill.skill)
+  projectSkills: ProjectSkillEntity[];
+
+  @OneToMany(
+    () => UserProjectSkillEntity,
+    (userProjectSkill) => userProjectSkill.skill,
+  )
+  userProjectSkills: UserProjectSkillEntity[];
 }

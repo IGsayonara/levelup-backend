@@ -1,0 +1,29 @@
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
+import { SkillEntity } from '../../skill/entities/skill.entity';
+import { UserEntity } from '../../user/entities/user.entity';
+
+@Entity('user_skill')
+@Unique(['user', 'skill'])
+export class UserSkillEntity extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @ManyToOne(() => UserEntity, (user) => user.userSkills)
+  user: UserEntity;
+
+  @ManyToOne(() => SkillEntity, (skill) => skill.userSkills)
+  skill: SkillEntity;
+
+  @Column({ nullable: true })
+  learnedAt: Date;
+
+  @Column({ nullable: true })
+  description: string;
+}

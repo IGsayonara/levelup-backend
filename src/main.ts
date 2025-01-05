@@ -1,26 +1,26 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import * as fs from 'node:fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // cors
   app.enableCors({
-    origin: [
-      'http://localhost:8080',
-      'http://luckyigor.world',
-      'http://dev.luckyigor.world',
-    ],
+    origin: ['http://localhost:8080'],
   });
 
   // swagger
   const config = new DocumentBuilder()
-    .setTitle('Levelup Api')
-    .setDescription('The cats leveleup description')
+    .setTitle('Levelup API')
+    .setDescription('This is a swagger documentation for levelup API')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
+  fs.writeFileSync('./swagger-spec.json', JSON.stringify(document));
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(
@@ -29,6 +29,11 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  console.log(3);
+
+  const reflector = app.get(Reflector);
+  app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
   await app.listen(3000);
 }

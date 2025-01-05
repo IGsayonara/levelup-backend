@@ -1,9 +1,20 @@
-import { IProject } from '../../projects/interfaces/project.inerface';
-import { ISkill } from '../../skill/interfaces/skill.inerface';
+import { IUserSkill } from '../../user-skill/interfaces/user-skill.interface';
+import { IUserProject } from '../../user-Project/interfaces/user-project.interface';
 
 export interface IUser {
+  id: number;
   username: string;
   password: string;
-  projects?: IProject[];
-  skills?: ISkill[];
+  userProjects?: IUserProject[];
+  userSkills?: IUserSkill[];
+  refreshToken: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  profileImage?: string;
+  bio?: string;
+  phoneNumber?: string;
+  address?: string;
+  dateOfBirth?: Date;
+  userProfile?: any;
 }
