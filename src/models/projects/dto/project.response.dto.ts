@@ -8,7 +8,7 @@ import {
   IsString,
 } from 'class-validator';
 import { ProjectSkillResponseDto } from './project-skill.response.dto';
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
 export class ProjectResponseDto {
   @ApiProperty({ example: 1 })
@@ -44,4 +44,9 @@ export class ProjectResponseDto {
   @Expose()
   @IsDateString()
   updatedAt: Date;
+
+  @ApiProperty()
+  @Expose()
+  @Transform(({ value }) => value && `${process.env.UPLOADS_BASE_URL}/${value}`)
+  image: string;
 }

@@ -30,6 +30,8 @@ async function bootstrap() {
     }),
   );
 
+  console.log(3);
+
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
