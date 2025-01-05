@@ -1,10 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { IProject } from './interfaces/project.inerface';
 import { ProjectEntity } from './entities/project.entity';
-import { In, Repository } from 'typeorm';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { SkillEntity } from '../skill/entities/skill.entity';
-import { UserService } from '../user/user.service';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { UserService } from '../user/services/user.service';
 import {
   FilterOperator,
   paginate,
@@ -12,65 +10,66 @@ import {
   PaginateQuery,
 } from 'nestjs-paginate';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ProjectCreateDto } from './dto/project.create.dto';
+import { UserEntity } from '../user/entities/user.entity';
+import { UserProfileEntity } from '../user/entities/user-profile.entity';
+import { ProjectUpdateDto } from './dto/project.update.dto';
 
 @Injectable()
 export class ProjectService {
   constructor(
     private readonly userService: UserService,
-
     @InjectRepository(ProjectEntity)
     private readonly projectRepository: Repository<ProjectEntity>,
   ) {}
-  async getProjects(query: PaginateQuery): Promise<Paginated<ProjectEntity>> {
+  async getPaginated(query: PaginateQuery): Promise<Paginated<ProjectEntity>> {
     return paginate(query, this.projectRepository, {
-      relations: ['skills'],
+      relations: ['projectSkills'],
       sortableColumns: ['id', 'title'],
       searchableColumns: ['title'],
       filterableColumns: { title: [FilterOperator.ILIKE] },
       nullSort: 'last',
-      defaultSortBy: [['created_at', 'DESC']],
+      defaultSortBy: [['createdAt', 'DESC']],
       defaultLimit: 4,
     });
   }
 
-  async getProject(id: number): Promise<IProject> {
-    const project = await ProjectEntity.findOne({
-      where: {
-        id,
-      },
-      relations: ['skills'],
-    });
+  async findOne(
+    findOptionsWhere: FindOptionsWhere<ProjectEntity>,
+  ): Promise<IProject | null> {
+    return await ProjectEntity.createQueryBuilder('project')
+      .leftJoinAndSelect('project.projectSkills', 'projectSkill')
+      .leftJoinAndSelect('projectSkill.skill', 'skill')
+      .where(findOptionsWhere)
+      .getOne();
+  }
 
-    if (!project) {
-      throw new NotFoundException({
-        message: `Can't find any project with id: ${id}`,
-      });
-    }
-
+  async addOne(createProjectDto: ProjectCreateDto): Promise<IProject | null> {
+    console.log(createProjectDto);
+    const project = new ProjectEntity();
+    Object.assign(project, createProjectDto);
+    await project.save();
     return project;
   }
 
-  async addProject(
-    createProjectDto: CreateProjectDto,
-    username,
-  ): Promise<IProject> {
-    const project = new ProjectEntity();
+  async updateOne(
+    updateProjectDto: Partial<ProjectEntity>,
+    findOptionsWhere: FindOptionsWhere<ProjectEntity>,
+  ): Promise<IProject | null> {
+    const project = await ProjectEntity.createQueryBuilder('project')
+      .where(findOptionsWhere)
+      .getOne();
 
-    const user = await this.userService.getUser(username);
+    if (!project) {
+      throw new NotFoundException();
+    }
 
-    const skills: SkillEntity[] = createProjectDto.skills
-      ? await SkillEntity.find({
-          where: {
-            id: In(createProjectDto.skills),
-          },
-        })
-      : [];
+    await ProjectEntity.createQueryBuilder('project')
+      .update()
+      .set(updateProjectDto)
+      .where({ id: project.id })
+      .execute();
 
-    project.user = user;
-    project.title = createProjectDto.title;
-    project.description = createProjectDto.description;
-    project.skills = skills;
-
-    return await project.save();
+    return this.findOne(findOptionsWhere);
   }
 }

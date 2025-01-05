@@ -1,34 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ISkill } from './interfaces/skill.inerface';
 import { SkillEntity } from './entities/skill.entity';
-import { CreateSkillDto } from './dto/create-skill.dto';
+import { SkillCreateDto } from './dto/skill.create.dto';
+import { FindOptionsWhere } from 'typeorm';
 
 @Injectable()
 export class SkillService {
   async getSkills(): Promise<ISkill[]> {
     return await SkillEntity.find();
   }
-  async getSkill(id: number): Promise<ISkill> {
-    const skill = await SkillEntity.findOne({
-      where: {
-        id,
-      },
-      relations: ['projects'],
+  async findOne(
+    findOptionsWhere: FindOptionsWhere<SkillEntity | null>,
+  ): Promise<ISkill> {
+    return await SkillEntity.findOne({
+      where: findOptionsWhere,
     });
-
-    if (skill === null) {
-      throw new NotFoundException({
-        message: `Can't find any skill with id: ${id}`,
-      });
-    }
-
-    return skill;
-  }
-  async addSkill(createSkillDto: CreateSkillDto): Promise<ISkill> {
-    const skill = new SkillEntity();
-
-    skill.title = createSkillDto.title;
-
-    return await skill.save();
   }
 }

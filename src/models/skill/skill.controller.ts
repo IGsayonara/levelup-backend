@@ -3,22 +3,29 @@ import {
   Controller,
   Get,
   HttpStatus,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
 import { SkillService } from './skill.service';
-import { CreateSkillDto } from './dto/create-skill.dto';
+import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { SkillResponseDto } from './dto/skill.response.dto';
+import { isArray } from 'class-validator';
 
+@ApiTags('Skills')
 @Controller('skills')
 export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
+  @ApiResponse({ type: SkillResponseDto, isArray: true, status: HttpStatus.OK })
   @Get()
-  async findAll() {
+  async findAll(): Promise<SkillResponseDto[]> {
     return await this.skillService.getSkills();
   }
 
+  @ApiResponse({ type: SkillResponseDto, status: HttpStatus.OK })
+  @ApiNotFoundResponse()
   @Get('/:id')
   async findOne(
     @Param(
@@ -26,12 +33,13 @@ export class SkillController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
-  ) {
-    return await this.skillService.getSkill(id);
-  }
+  ): Promise<SkillResponseDto> {
+    const skill = await this.skillService.findOne({ id });
 
-  @Post('/add')
-  async create(@Body() createSkillDto: CreateSkillDto) {
-    return await this.skillService.addSkill(createSkillDto);
+    if (!skill) {
+      throw new NotFoundException();
+    }
+
+    return skill;
   }
 }
