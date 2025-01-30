@@ -64,7 +64,7 @@ export class ProjectController {
   @Put('/:id/image')
   @UseInterceptors(FileInterceptor('file', multerOptions()))
   async updateProjectImage(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: any,
     @Param(
       'id',
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),

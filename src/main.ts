@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // cors
   app.enableCors({
-    origin: ['http://localhost:8080'],
+    origin: '*',
   });
 
   // swagger
@@ -30,11 +30,9 @@ async function bootstrap() {
     }),
   );
 
-  console.log(3);
-
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();
