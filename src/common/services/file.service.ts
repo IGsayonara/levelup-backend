@@ -8,7 +8,7 @@ export class FileService {
    * @param file - The file object provided by Multer.
    * @returns The file path where the file is stored.
    */
-  async uploadFile(file: Express.Multer.File): Promise<string> {
+  async uploadFile(file: any): Promise<string> {
     const filePath = `uploads/${file.filename}`;
 
     try {

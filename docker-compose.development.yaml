@@ -12,9 +12,30 @@ services:
     networks:
       - default
 
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: oludaredolamu@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      - default
+
   levelup-backend:
     build:
       context: .
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./package.json
+          target: /app/package.json
     container_name: levelup-backend
     environment:
       DB_HOST: postgres
@@ -22,6 +43,7 @@ services:
       DB_PASSWORD: postgres
       DB_NAME: postgres
       DB_PORT: 5432
+      CHOKIDAR_USEPOLLING: true
     ports:
       - "4000:4000"
     depends_on:
@@ -29,11 +51,13 @@ services:
     networks:
       - default
       - levelup-network
+    command: npm run start:dev  # Run in development mode with hot reloading
 
 volumes:
   postgres-data:
+
 networks:
-  default: # Define the default network explicitly
+  default:
     driver: bridge
   levelup-network:
-    external: true
+    external: true  # External network if needed, can be omitted if you don't need it

@@ -64,10 +64,7 @@ export class UserProfileController {
     },
   })
   @UseInterceptors(FileInterceptor('file', multerOptions()))
-  async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-    @Req() req: RequestWithUser,
-  ) {
+  async uploadFile(@UploadedFile() file: any, @Req() req: RequestWithUser) {
     await this.userProfileService.updateOne(
       {
         username: req.user.username,
