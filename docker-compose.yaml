@@ -29,6 +29,8 @@ services:
     networks:
       - default
       - levelup-network
+    volumes:
+      - ./uploads:/app/uploads
 
 volumes:
   postgres-data:
