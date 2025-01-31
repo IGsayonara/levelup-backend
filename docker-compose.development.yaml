@@ -26,6 +26,7 @@ services:
   levelup-backend:
     build:
       context: .
+      dockerfile: Dockerfile.dev
     develop:
       watch:
         - action: sync
@@ -36,7 +37,7 @@ services:
         - action: rebuild
           path: ./package.json
           target: /app/package.json
-    container_name: levelup-backend
+    container_name: levelup-backend-dev
     environment:
       DB_HOST: postgres
       DB_USERNAME: postgres
